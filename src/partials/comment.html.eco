@@ -1,0 +1,240 @@
+<%allComments = @getComments()%>
+<%responses = allComments.findAll({responseid:{$exists: true}},{date:-1})%>
+<%comments =  allComments.findAll({responseid:{$exists: false}},{date:-1})%>
+<%imgPath = "./"%>
+<div class="ui two column grid comments">
+    <div class="column">
+        <div class="ui piled blue segment">
+            <h2 class="ui header">
+        <i class="icon inverted circular teal comment"></i> Comments
+      </h2>
+            <div id="comments" class="ui comments">
+                <% if comments.length is 0: %>
+                <div id="no-comments"> 
+                    <p>No comments yet</p>
+                </div>  
+                <% else: %>
+                    <% for comment in comments.toJSON():%>
+                        <div id="<%-comment.timeid%>" class="comment">
+                            <a class="avatar">
+                                <%if comment.avatar:%>
+                                    <img src="<%=comment.avatar%>">
+                                <%else:%>
+                                    <img src="/img/avatar/default-avatar.png">
+                                <%end%>
+                            </a>
+                            <div class="content">
+                                <a class="author"><%-comment.author%></a>
+                                <div class="metadata">
+                                    <span class="date"><%-comment.date.toDateString()%></span>
+                                    <span class="float-right hidden slug"><%-comment.slug%></span>
+                                    <span class="float-right hidden timeid"><%-comment.timeid%></span>
+                                    <span class="float-right hidden responseid"></span>
+                                </div>
+                                <div class="text">
+                                    <%-comment.contentRenderedWithoutLayouts%>
+                                </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                    <a class="delete hidden">Delete</a>
+                                    
+                                </div>
+                                <%responsesHere = responses.findAll({responseid:comment.timeid},{date:-1})%>
+                                <%if responsesHere.length is 0:%>
+                                    <p>No Responses Here</p>
+                                <%end%>
+                                <%for respond in responsesHere.toJSON():%>
+                                    <div id="<%-respond.timeid%>" class="comment">
+                                        <a class="avatar">
+                                            <%if respond.avatar:%>
+                                                <img src="<%=respond.avatar%>">
+                                            <%else:%>
+                                                <img src="/img/avatar/default-avatar.png">
+                                            <%end%>
+                                        </a>
+                                        <div class="content">
+                                            <a class="author"><%-respond.author%></a>
+                                            <div class="metadata">
+                                                <span class="date"><%-respond.date.toDateString()%></span>
+                                                <span class="float-right hidden slug"><%-respond.slug%></span>
+                                                <span class="float-right hidden timeid"><%-respond.timeid%></span>
+                                                <span class="float-right hidden responseid"><%-respond.responseid%></span>
+                                            </div>
+                                            <div class="text">
+                                                <%-respond.contentRenderedWithoutLayouts%>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="reply">Reply</a>
+                                                <a class="delete hidden">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <%end%>
+                            </div>
+                        </div>
+                    <%end%>
+                <%end%>
+                <div id="comment-template" style="display:none;">
+                        <div class="comment">
+                            <a class="avatar">
+                                    <img src="/img/avatar/default-avatar.png">
+                            </a>
+                            <div class="content">
+                                <a class="author"></a>
+                                <div class="metadata">
+                                    <span class="date"></span>
+                                    <span  class="float-right hidden slug"></span>
+                                    <span class="float-right hidden timeid"></span>
+                                    <span class="float-right hidden responseid"></span>
+                                </div>
+                                <div class="text">
+                                    
+                                </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                    <a class="delete hidden">Delete</a>
+                                    
+                                    <span class="float-right hidden">Inserted</span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <script>
+                    var deferCount = 0;
+                    function defer(method) {
+                        if (window.$)
+                            method();
+                        else if (deferCount < 50){
+                            deferCount ++;
+                            setTimeout(function() { defer(method) }, 50);
+                        }
+                    }
+                    
+                    function assignReplyForm(){
+                        //as this function is repeatedly called
+                        //each time a new comment is inserted
+                        //we need to remove any existing handlers
+                        $('.actions .reply').off('click');
+                        
+                        //now re-attach click handler
+                        $('.actions .reply').click(function(){
+                            var offset = $(this).offset();
+                            var parent = $(this).parent().parent();
+                            var left = offset.left-50;
+                            var top = offset.top+50;
+                            var form = $('#second-form');
+                            parent.append(form);
+                            form.fadeIn();
+                            
+                        });
+                        
+                    }
+                    function setPlaceHolders(){
+                        $('.field .placeholder').click(function(e){
+                            var txtarea =  $(this).siblings('textarea');
+                            $(this).hide();
+                            txtarea.focus();
+                            txtarea[0].selectionStart = 0;
+                            txtarea[0].selectionEnd = 0;
+            
+                        });
+                         $('textarea').click(function(){
+                            $(this).siblings('.placeholder').hide();
+                        });
+                         $('textarea').blur(function(){
+                           if($(this).val().length == 0){
+                              $('textarea').siblings('.placeholder').show();
+                           }
+                        });
+                        assignReplyForm();
+                    }
+                    
+                    defer(setPlaceHolders);
+                    
+                    var ablog = ablog || {};
+                    
+                    ablog.formSubmit = function(formId) {
+                        var form = $('#'+formId);
+                        var timeEl = form.parent().find('.timeid');
+                        var responseId = null;
+                        var url = form.attr('action');
+                        if(timeEl.length > 0){
+                            responseId = timeEl.text();
+                            form.fadeOut();
+                        }
+                        msg = {
+                            "author": form.find('.author').val(),
+                            "slug": $('#doc-slug').text(),
+                            "content": form.find('.content').val(),
+                            "responseid": responseId
+                        };
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: msg,
+                            success: function(data,status){
+                                $('#no-comments').remove();
+                                var template = $('#comment-template').children().clone();
+                                template.find('.author').html(data.meta.author);
+                                template.find('.date').html(new Date(data.meta.date).toDateString());
+                                template.find('.text').html(data.data);
+                                template.find('.slug').html(data.meta.postslug);
+                                template.find('.timeid').html(data.meta.timeid);
+                                template.find('.comment').attr('id',data.meta.timeid);
+                                
+                                if (data.meta.responseid){
+                                    template.find('.responseid').html(data.meta.responseId);
+                                    $('#'+data.meta.responseid+' .content').append(template);
+                                }
+                                else{
+                                    $('#comments').prepend(template);
+                                }
+                                
+                                assignReplyForm();
+                            }
+                        });
+                    }
+                </script>
+      
+                <form id='main-form' action="/comments" method="POST" class="ui reply form">
+                   
+                    <div class="field">
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
+                    </div>
+                    <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input name="author" type="text" value="" placeholder="Name"   class="author">
+                        </div>
+                        <div style="width:38%;float:right">
+                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                                <i class="icon edit"></i>Add Comment
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <form id='second-form' action="/comments" method="POST" class="ui reply form" style="display:none;">
+                    <div class="field">
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
+                    </div>
+                    <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input  name="author" type="text" value="" placeholder="Name" class="author">
+                        </div>
+                        <div style="width:38%;float:right">
+                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('second-form');">
+                                <i class="icon edit"></i>Reply
+                            </div>
+                        </div>
+                    </div>
+                </form>
+         
+            </div>
+        </div>
+    </div>
+</div>
