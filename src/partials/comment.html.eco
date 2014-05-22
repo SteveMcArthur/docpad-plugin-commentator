@@ -158,7 +158,7 @@
                         var timeEl = form.parent().find('.timeid');
                         var responseId = null;
                         var url = form.attr('action');
-                        if(timeEl.length > 0){
+                        if(formId === 'second-form'){
                             responseId = timeEl.text();
                             form.fadeOut();
                         }

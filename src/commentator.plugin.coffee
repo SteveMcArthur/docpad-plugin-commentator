@@ -1,7 +1,6 @@
 # Export Plugin
 module.exports = (BasePlugin) ->
     # Define Plugin
-    util = require('util')
     pathUtil = require('path')
     fs = require('fs')
     class Commentator extends BasePlugin
@@ -11,27 +10,30 @@ module.exports = (BasePlugin) ->
         config:
             collectionName: 'comments'
             relativeDirPath: 'comments'
-            postUrl: '/comment'
+            postUrl: '/comments'
             extension: '.html.md'
-            partial: pathUtil.join('plugins','docpad-plugin-commentator','src','partials','comment.html.eco')
-        
+            partial: pathUtil.join('node_modules','docpad-plugin-commentator','src','partials','comment.html.eco')
+
         
         # Extend Template Data
         # Add our form to our template data
         extendTemplateData: ({templateData}) ->
             # Prepare
             plugin = @
-            docpad = @docpad
-            
+            docpad = plugin.docpad
 
+            pathToPartial = pathUtil.join(docpad.config.rootPath,plugin.getConfig().partial)
+            fs.exists pathToPartial,(exists) ->
+                pathToPartial = pathToPartial.replace('node_modules','plugins') if !exists
+                plugin.setConfig({pathToPartial:pathToPartial})
+                    
             # getCommentsBlock
             templateData.getCommentsBlock = ->
                 @referencesOthers()
-                pathToPartial = pathUtil.join(docpad.initialConfig.rootPath,plugin.getConfig().partial)
-                blockHtml = fs.readFileSync(pathToPartial)
+                blockHtml = fs.readFileSync(plugin.getConfig().pathToPartial)
                 return blockHtml
 
-            # getComments
+            # getComments using the document slug
             templateData.getComments = ->
                 slug = @document.slug
                 return docpad.getCollection(plugin.getConfig().collectionName).findAll({'postslug': slug},[date:-1])
@@ -64,12 +66,9 @@ module.exports = (BasePlugin) ->
         serverExtend: (opts) ->
             {server} = opts
             docpad = @docpad
-            database = docpad.getDatabase()
-            path = require('path')
-            safefs = require('safefs')
 
             # Comment Handing
-            server.post '/comments', (req,res,next) ->
+            server.post  @getConfig().postUrl, (req,res,next) ->
                 # Prepare
                 console.log("POST COMMENTS")
                 console.log(req.body.slug)
@@ -77,10 +76,9 @@ module.exports = (BasePlugin) ->
                 nowTime = now.getTime()
                 console.log(nowTime)
                 nowString = now.toString()
-                redirect = req.body.redirect ? req.query.redirect ? 'back'
                 
-                outPath = path.join(docpad.config.documentsPaths[0],"comments")
-                outFile = path.join(outPath,nowTime.toString()+".html.md")
+                outPath =  pathUtil.join(docpad.config.documentsPaths[0],"comments")
+                outFile =  pathUtil.join(outPath,nowTime.toString()+".html.md")
                
                 # Prepare
                 documentAttributes =
@@ -90,16 +88,15 @@ module.exports = (BasePlugin) ->
                         author: req.body.author or ''
                         date: nowString
                         timeid: nowTime
-                        responseid:req.body.responseid or undefined
                         fullPath: outFile
-
-                # No need to call next here as res.send/redirect will do it for us
-
-                # Write source which will trigger the regeneration
-                meta = JSON.stringify(documentAttributes.meta, null, 0)
-                meta = meta.replace('{','').replace('}','').replace(/,/gi,',\r\n').replace(/:/gi,': ')
+                if req.body.responseid
+                    documentAttributes.meta.responseid = req.body.responseid
+                    
+                meta = ""
+                for key, val of documentAttributes.meta
+                    meta+= key+": "+val+"\r\n"
                 content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.data
-                console.log "writing file..."
+                safefs = require('safefs')
                 safefs.writeFile outFile, content, (err2) ->
                     return next(err2)  if err2
                     
