@@ -1,7 +1,9 @@
-<%allComments = @getComments()%>
-<%responses = allComments.findAll({responseid:{$exists: true}},{date:-1})%>
-<%comments =  allComments.findAll({responseid:{$exists: false}},{date:-1})%>
+<%console.log("IN COMMENT.HTML.ECO")%>
+<%responses = @allComments.findAll({responseid:{$exists: true}},{date:-1})%>
+<%comments =  @allComments.findAll({responseid:{$exists: false}},{date:-1})%>
+<%console.log("Num comments: "+comments.length)%>
 <%imgPath = "./"%>
+
 <div class="ui two column grid comments">
     <div class="column">
         <div class="ui piled blue segment">
@@ -12,67 +14,11 @@
                 <% if comments.length is 0: %>
                 <div id="no-comments"> 
                     <p>No comments yet</p>
-                </div>  
+                </div>
                 <% else: %>
-                    <% for comment in comments.toJSON():%>
-                        <div id="<%-comment.timeid%>" class="comment">
-                            <a class="avatar">
-                                <%if comment.avatar:%>
-                                    <img src="<%=comment.avatar%>">
-                                <%else:%>
-                                    <img src="/img/avatar/default-avatar.png">
-                                <%end%>
-                            </a>
-                            <div class="content">
-                                <a class="author"><%-comment.author%></a>
-                                <div class="metadata">
-                                    <span class="date"><%-comment.date.toDateString()%></span>
-                                    <span class="float-right hidden slug"><%-comment.slug%></span>
-                                    <span class="float-right hidden timeid"><%-comment.timeid%></span>
-                                    <span class="float-right hidden responseid"></span>
-                                </div>
-                                <div class="text">
-                                    <%-comment.contentRenderedWithoutLayouts%>
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">Reply</a>
-                                    <a class="delete hidden">Delete</a>
-                                    
-                                </div>
-                                <%responsesHere = responses.findAll({responseid:comment.timeid},{date:-1})%>
-                                <%if responsesHere.length is 0:%>
-                                    <p>No Responses Here</p>
-                                <%end%>
-                                <%for respond in responsesHere.toJSON():%>
-                                    <div id="<%-respond.timeid%>" class="comment">
-                                        <a class="avatar">
-                                            <%if respond.avatar:%>
-                                                <img src="<%=respond.avatar%>">
-                                            <%else:%>
-                                                <img src="/img/avatar/default-avatar.png">
-                                            <%end%>
-                                        </a>
-                                        <div class="content">
-                                            <a class="author"><%-respond.author%></a>
-                                            <div class="metadata">
-                                                <span class="date"><%-respond.date.toDateString()%></span>
-                                                <span class="float-right hidden slug"><%-respond.slug%></span>
-                                                <span class="float-right hidden timeid"><%-respond.timeid%></span>
-                                                <span class="float-right hidden responseid"><%-respond.responseid%></span>
-                                            </div>
-                                            <div class="text">
-                                                <%-respond.contentRenderedWithoutLayouts%>
-                                            </div>
-                                            <div class="actions">
-                                                <a class="reply">Reply</a>
-                                                <a class="delete hidden">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <%end%>
-                            </div>
-                        </div>
-                    <%end%>
+                  <% for comment in comments.toJSON():%>
+                    <%obj = {comment:comment,responses:responses,baseComment:@baseComment,eco:@eco}%>
+                    <%-@eco.render(@baseComment,obj)%>
                 <%end%>
                 <div id="comment-template" style="display:none;">
                         <div class="comment">
@@ -164,7 +110,7 @@
                         }
                         msg = {
                             "author": form.find('.author').val(),
-                            "slug": $('#doc-slug').text(),
+                            "slug": form.find('.slug').val(),
                             "content": form.find('.content').val(),
                             "responseid": responseId
                         };

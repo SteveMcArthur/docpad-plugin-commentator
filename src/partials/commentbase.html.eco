@@ -1,0 +1,32 @@
+<div id="<%-@comment.timeid%>" class="comment">
+    <a class="avatar">
+        <%if @comment.avatar:%>
+            <img src="<%=comment.avatar%>">
+            <%else:%>
+                <img src="/img/avatar/default-avatar.png">
+            <%end%>
+    </a>
+    <div class="content">
+        <a class="author">
+            <%-@comment.author%>
+        </a>
+        <div class="metadata">
+            <span class="date"><%-@comment.date.toDateString()%></span>
+            <span class="float-right hidden slug"><%-@comment.postslug%></span>
+            <span class="float-right hidden timeid"><%-@comment.timeid%></span>
+            <span class="float-right hidden responseid"></span>
+        </div>
+        <div class="text">
+            <%-@comment.contentRenderedWithoutLayouts%>
+        </div>
+        <div class="actions">
+            <a class="reply">Reply</a>
+            <a class="delete hidden">Delete</a>
+            <%responsesHere = @responses.findAll({responseid:@comment.timeid},{date:-1})%>
+            <%for respond in responsesHere.toJSON():%>
+                <%obj = {comment:respond,responses:@responses,baseComment:@baseComment,eco:@eco}%>
+                <%- @eco.render(@baseComment,obj)%>
+            <%end%>
+        </div>
+    </div>
+</div>

@@ -14,23 +14,32 @@ module.exports = (BasePlugin) ->
             extension: '.html.md'
             partial: pathUtil.join('node_modules','docpad-plugin-commentator','src','partials','comment.html.eco')
 
-        
+        setPartialPaths: ->
+            plugin = @
+            docpad = plugin.docpad
+            pathToPartial = pathUtil.join(docpad.config.rootPath,plugin.getConfig().partial)
+            fs.exists pathToPartial,(exists) ->
+                pathToPartial = pathToPartial.replace('node_modules','plugins') if !exists
+                pathToBase = pathToPartial.replace('comment.html.eco','commentbase.html.eco')
+                plugin.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase})
+            
         # Extend Template Data
         # Add our form to our template data
         extendTemplateData: ({templateData}) ->
             # Prepare
             plugin = @
             docpad = plugin.docpad
-
-            pathToPartial = pathUtil.join(docpad.config.rootPath,plugin.getConfig().partial)
-            fs.exists pathToPartial,(exists) ->
-                pathToPartial = pathToPartial.replace('node_modules','plugins') if !exists
-                plugin.setConfig({pathToPartial:pathToPartial})
+            @setPartialPaths()
                     
             # getCommentsBlock
             templateData.getCommentsBlock = ->
                 @referencesOthers()
-                blockHtml = fs.readFileSync(plugin.getConfig().pathToPartial)
+                eco = require('eco')
+                blockHtml = fs.readFileSync(plugin.getConfig().pathToPartial,'utf8')
+                baseComment = fs.readFileSync(plugin.getConfig().pathToBase,'utf8')
+                pageComments = docpad.getCollection(plugin.getConfig().collectionName).findAll({'postslug': @document.slug},[date:-1])
+                obj = {baseComment:baseComment,eco:eco,allComments: pageComments,document:@document}
+                blockHtml = eco.render(blockHtml,obj)
                 return blockHtml
 
             # getComments using the document slug
@@ -54,6 +63,7 @@ module.exports = (BasePlugin) ->
             comments = database.findAllLive({relativeOutDirPath: 'comments'},[date:-1])
             # Set the collection
             docpad.setCollection(config.collectionName, comments)
+            console.log("GOT COLLECTION")
 
             # Chain
             @
@@ -70,11 +80,8 @@ module.exports = (BasePlugin) ->
             # Comment Handing
             server.post  @getConfig().postUrl, (req,res,next) ->
                 # Prepare
-                console.log("POST COMMENTS")
-                console.log(req.body.slug)
                 now = new Date()
                 nowTime = now.getTime()
-                console.log(nowTime)
                 nowString = now.toString()
                 
                 outPath =  pathUtil.join(docpad.config.documentsPaths[0],"comments")
@@ -91,7 +98,7 @@ module.exports = (BasePlugin) ->
                         fullPath: outFile
                 if req.body.responseid
                     documentAttributes.meta.responseid = req.body.responseid
-                    
+                # Write source which will trigger the regeneration
                 meta = ""
                 for key, val of documentAttributes.meta
                     meta+= key+": "+val+"\r\n"
