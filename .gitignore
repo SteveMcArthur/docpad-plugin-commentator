@@ -1,1 +1,10 @@
+# Temp Files
+**/*.log
+**/.docpad.db
+
+# Build Files
+build/
+components/
+bower_components/
 node_modules/
+out/

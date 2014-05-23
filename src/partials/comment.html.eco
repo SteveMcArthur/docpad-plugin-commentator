@@ -1,7 +1,6 @@
 <%responses = @allComments.findAll({responseid:{$exists: true}},{date:-1})%>
 <%comments =  @allComments.findAll({responseid:{$exists: false}},{date:-1})%>
 <%imgPath = "./"%>
-
 <div class="ui two column grid comments">
     <div class="column">
         <div class="ui piled blue segment">

@@ -75,7 +75,7 @@ module.exports = (testers) ->
                 postUrl = "#{baseUrl}/comments"
                 now = new Date()
                 nowTime = now.getTime()
-                nowString = now.toISOString()
+                nowString = now.toString()
 
                 # Post
                 test "post a new comment to #{postUrl}", (done) ->
@@ -85,8 +85,7 @@ module.exports = (testers) ->
                         .send(
                             "author": "Author Name",
                             "slug": "post-page-title",
-                            "content": "Text of comment",
-                            "responseid": nowTime
+                            "content": "Text of comment"
                         )
                         .timeout(30*1000)
                         .end (err,res) ->
@@ -96,28 +95,31 @@ module.exports = (testers) ->
                             generated = true
 
                             # Cleanup
+                            nowTime = parseInt(nowTime/1000)
                             if res.body?.meta?.fullPath
-                                res.body.meta.fullPath = res.body.meta.fullPath.replace(/.+src\/documents/, 'trimmed')
+                                res.body.meta.fullPath = res.body.meta.fullPath.replace(/.+documents/, 'trimmed')
 
                             # Compare
                             actual = res.body
+                            timeid = parseInt(actual.meta.timeid /1000)
+                            actual.meta.timeid = timeid
+                            actual.meta.fullPath = actual.meta.fullPath.replace(/[0-9]+/, timeid)
+                            
+                            console.log(actual)
+                            
                             expected =
                                 data: 'Text of comment',
                                 meta:
-                                    "author": "Author Name",
-                                    "slug": "post-page-title",
-                                    "responseid": nowTime
-
+                                    postslug: "post-page-title",
+                                    author: "Author Name",
+                                    date: nowString,
+                                    timeid: nowTime,
+                                    fullPath: 'trimmed\\comments\\'+nowTime+'.html.md'
+                                    
+                            console.log(expected)
                             # Check
                             expect(actual).to.deep.equal(expected)
                             done()
-
-                # Force a generate as watching isn't working for plugin tests
-                setTimeout(
-                    -> docpad.action('generate')
-                    5*1000
-                )
-
 
             # Cleanup
             @cleanup()
