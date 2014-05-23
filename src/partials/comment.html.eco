@@ -1,7 +1,5 @@
-<%console.log("IN COMMENT.HTML.ECO")%>
 <%responses = @allComments.findAll({responseid:{$exists: true}},{date:-1})%>
 <%comments =  @allComments.findAll({responseid:{$exists: false}},{date:-1})%>
-<%console.log("Num comments: "+comments.length)%>
 <%imgPath = "./"%>
 
 <div class="ui two column grid comments">

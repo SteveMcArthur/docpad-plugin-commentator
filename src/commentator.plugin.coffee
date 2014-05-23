@@ -14,14 +14,20 @@ module.exports = (BasePlugin) ->
             extension: '.html.md'
             partial: pathUtil.join('node_modules','docpad-plugin-commentator','src','partials','comment.html.eco')
 
+        setConfigPaths:(pathToPartial) ->
+            pathToBase = pathToPartial.replace('comment.html.eco','commentbase.html.eco')
+            @.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase})
+        
         setPartialPaths: ->
             plugin = @
             docpad = plugin.docpad
             pathToPartial = pathUtil.join(docpad.config.rootPath,plugin.getConfig().partial)
-            fs.exists pathToPartial,(exists) ->
-                pathToPartial = pathToPartial.replace('node_modules','plugins') if !exists
-                pathToBase = pathToPartial.replace('comment.html.eco','commentbase.html.eco')
-                plugin.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase})
+            if !fs.existsSync(pathToPartial)
+                pathToPartial = pathToPartial.replace('node_modules','plugins')
+                if !fs.existsSync(pathToPartial)
+                    pathToPartial = pathUtil.join(docpad.config.pluginPaths[0],'src','partials','comment.html.eco')
+                    
+            plugin.setConfigPaths(pathToPartial)
             
         # Extend Template Data
         # Add our form to our template data
@@ -30,7 +36,6 @@ module.exports = (BasePlugin) ->
             plugin = @
             docpad = plugin.docpad
             @setPartialPaths()
-                    
             # getCommentsBlock
             templateData.getCommentsBlock = ->
                 @referencesOthers()
@@ -63,7 +68,6 @@ module.exports = (BasePlugin) ->
             comments = database.findAllLive({relativeOutDirPath: 'comments'},[date:-1])
             # Set the collection
             docpad.setCollection(config.collectionName, comments)
-            console.log("GOT COLLECTION")
 
             # Chain
             @
