@@ -17,7 +17,7 @@ Post commenting system for docpad. Uses ajax to post comments back to the server
   <%- @getCommentsBlock() %>
   ```
 
-![Screenshot](https://github.com/SteveMcArthur/docpad-plugin-commentator/blob/master/screen-shot.jpg)
+![Screenshot](https://raw.githubusercontent.com/SteveMcArthur/docpad-plugin-commentator/master/screen-shot.jpg)
 
 ## History
 [Discover the change history by heading on over to the `HISTORY.md` file.](https://github.com/SteveMcArthur/docpad-plugin-commentator/blob/master/HISTORY.md#)
