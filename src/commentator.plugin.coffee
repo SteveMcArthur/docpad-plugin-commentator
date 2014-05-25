@@ -13,11 +13,37 @@ module.exports = (BasePlugin) ->
             postUrl: '/comments'
             extension: '.html.md'
             partial: pathUtil.join('node_modules','docpad-plugin-commentator','src','partials','comment.html.eco')
+            
+        copyFile: (source, target, cb) ->
+            console.log('copyFile')
+            cbCalled = false
+            done: (err) ->
+                console.log(err)
+                if !cbCalled
+                    cb(err)
+                    cbCalled = true
+                    
+            rd = fs.createReadStream(source)
+            rd.on "error", (err) ->
+                done(err)
+
+            wr = fs.createWriteStream(target)
+            wr.on "error", (err) ->
+                done(err)
+            wr.on "close", (ex) ->
+                done()
+
+            rd.pipe(wr)
+
 
         setConfigPaths:(pathToPartial) ->
             pathToBase = pathToPartial.replace('comment.html.eco','commentbase.html.eco')
-            style = pathToPartial.replace(/partials(\/|\\)comment\.html\.eco/,'commentator.css')
-            @.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase,stylePath:style})
+            stylePath = pathToPartial.replace(/partials(\/|\\)comment\.html\.eco/,'commentator.css')
+            fontsPath =  pathToPartial.replace(/partials(\/|\\)comment\.html\.eco/,'fonts')
+            commentsPath = pathUtil.join(@docpad.config.documentsPaths[0],'comments')
+            if !fs.existsSync(commentsPath)
+                fs.mkdirSync(commentsPath)
+            @.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase,stylePath:stylePath,fontsPath:fontsPath})
         
         setPartialPaths: ->
             plugin = @
@@ -37,16 +63,26 @@ module.exports = (BasePlugin) ->
             plugin = @
             docpad = plugin.docpad
             @setPartialPaths()
-            style = plugin.getConfig().stylePath
+            config = plugin.getConfig()
+            style = config.stylePath
             styleContent = fs.readFileSync(style,'utf8')
             styleContent = styleContent.replace(/^\s+|\n\s*|\s+$/g,'')
-           
+            console.log("Copying fonts...")
+            console.log(docpad.config.filesPaths[0])
+            fontsOut = pathUtil.join(docpad.config.filesPaths[0],'fonts')
+            console.log(fontsOut)
+            if !fs.existsSync(docpad.config.filesPaths[0])
+                fs.mkdirSync(docpad.config.filesPaths[0])
+            if !fs.existsSync(fontsOut)
+                fs.mkdirSync(fontsOut)
+            files = ['commentator.eot','commentator.svg','commentator.ttf','commentator.woff']
+            for filename in files
+                plugin.copyFile(pathUtil.join(config.fontsPath,filename),pathUtil.join(fontsOut,filename))
+                
             
             # getCommentsBlock
             templateData.getCommentsBlock = ->
                 @referencesOthers()
-                
-               
                 
                 eco = require('eco')
                 blockHtml = fs.readFileSync(plugin.getConfig().pathToPartial,'utf8')
@@ -63,6 +99,7 @@ module.exports = (BasePlugin) ->
 
             # Chain
             @
+            
             
         # Extend Collections
         # Create our live collection for our comments
@@ -81,9 +118,6 @@ module.exports = (BasePlugin) ->
             # Chain
             @
 
-
-
-        
         # Server Extend
         # Used to add our own custom routes to the server before the docpad routes are added
         serverExtend: (opts) ->
@@ -112,6 +146,8 @@ module.exports = (BasePlugin) ->
                 if req.body.responseid
                     documentAttributes.meta.responseid = req.body.responseid
                 # Write source which will trigger the regeneration
+                # but we don't have to wait for the page to be regenerated
+                # as the page will be updated by ajax
                 meta = ""
                 for key, val of documentAttributes.meta
                     meta+= key+": "+val+"\r\n"
@@ -119,7 +155,9 @@ module.exports = (BasePlugin) ->
                 safefs = require('safefs')
                 safefs.writeFile outFile, content, (err2) ->
                     return next(err2)  if err2
-                    
+                
+                # send the update back to the page to
+                # be updated client side
                 res.json(documentAttributes)
 
             # Chain

@@ -13,6 +13,7 @@ node_modules/
 
 # Development Files
 .travis*
+.bat
 Cakefile
 Makefile
 BACKERS.md

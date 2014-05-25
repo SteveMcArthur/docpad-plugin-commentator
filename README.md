@@ -19,5 +19,15 @@ Post commenting system for docpad. Uses ajax to post comments back to the server
 
 ![Screenshot](https://raw.githubusercontent.com/SteveMcArthur/docpad-plugin-commentator/master/screen-shot.jpg)
 
-## History
-[Discover the change history by heading on over to the `HISTORY.md` file.](https://github.com/SteveMcArthur/docpad-plugin-commentator/blob/master/HISTORY.md#)
+# History
+
+- v2.0.2 May 25, 2014
+	-  CSS re-namespaced and now injected into eco template so that styling is independent of page. Fixed issue with form not showing when no comments.
+
+- v2.0.1 May 23, 2014
+	- Eco template now rendered within plugin. Fixed issue with nested partials. Tests now pass.
+
+- v2.0.0 May 21, 2014
+	- Initial working release
+
+
