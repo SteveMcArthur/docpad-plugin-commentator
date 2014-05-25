@@ -12,7 +12,7 @@ module.exports = (BasePlugin) ->
             relativeDirPath: 'comments'
             postUrl: '/comments'
             extension: '.html.md'
-            partial: pathUtil.join('node_modules','docpad-plugin-commentator','src','partials','comment.html.eco')
+            partial: pathUtil.join('node_modules','docpad-plugin-commentator','out','partials','comment.html.eco')
             
         copyFile: (source, target, cb) ->
             console.log('copyFile')
@@ -52,7 +52,7 @@ module.exports = (BasePlugin) ->
             if !fs.existsSync(pathToPartial)
                 pathToPartial = pathToPartial.replace('node_modules','plugins')
                 if !fs.existsSync(pathToPartial)
-                    pathToPartial = pathUtil.join(docpad.config.pluginPaths[0],'src','partials','comment.html.eco')
+                    pathToPartial = pathUtil.join(docpad.config.pluginPaths[0],'out','partials','comment.html.eco')
 
             plugin.setConfigPaths(pathToPartial)
             
