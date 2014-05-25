@@ -148,9 +148,11 @@ module.exports = (BasePlugin) ->
                 for key, val of documentAttributes.meta
                     meta+= key+": "+val+"\r\n"
                 content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.data
-                safefs = require('safefs')
-                safefs.writeFile outFile, content, (err2) ->
-                    return next(err2)  if err2
+             
+                fs.writeFile outFile, content, (err) ->
+                    if err
+                        console.log(err)
+                        return next(err2)
                 
                 # send the update back to the page to
                 # be updated client side
