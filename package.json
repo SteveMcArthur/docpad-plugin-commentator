@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-commentator",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Post commenting system for docpad. Uses ajax to post comments back to the server and save them as markdown. Allows nested comments - ie comments associated with other comments on the page and displayed directly underneath and indented.",
   "homepage": "",
   "keywords": [

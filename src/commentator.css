@@ -45,7 +45,7 @@
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.com i.inverted.teal.icon {
+.com i.inverted.icon {
   background-color: #00b5ad !important;
   color: #ffffff !important;
 }
@@ -220,6 +220,8 @@
 .com .buttons .button,
 .com .button {
   font-size: 1rem;
+  background-color: #00b5ad;
+  color: #ffffff;
 }
 .com .icon.buttons .button,
 .com .icon.button {
@@ -231,11 +233,7 @@
   padding-right: 1.4em !important;
   padding-left: 4em !important;
 }
-.com .blue.buttons .button,
-.com .blue.button {
-  background-color: #6ecff5;
-  color: #ffffff;
-}
+
 .com .fluid.buttons,
 .com .button.fluid,
 .com .fluid.buttons > .button {

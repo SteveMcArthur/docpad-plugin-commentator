@@ -5,7 +5,7 @@
 <div class="com">
     <style><%-@styleContent%></style>
             <h2 class="header">
-                <i class="icon inverted circular teal comment"></i> Comments
+                <i class="icon inverted circular comment"></i> Comments
             </h2>
             <div id="comments" class="comments">
                 <% if comments.length is 0: %>
@@ -21,7 +21,7 @@
                 <div id="comment-template" style="display:none;">
                         <div class="comment">
                             <a class="avatar">
-                                    <img src="/img/avatar/default-avatar.png">
+                                    <img src="/fonts/default-avatar.png">
                             </a>
                             <div class="content">
                                 <a class="author"></a>
@@ -153,7 +153,7 @@
                             <input name="author" type="text" value="" placeholder="Name"   class="author">
                         </div>
                         <div style="width:38%;float:right">
-                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                            <div class="fluid labeled icon button" onclick="ablog.formSubmit('main-form');">
                                 <i class="icon edit"></i>Add Comment
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                             <input  name="author" type="text" value="" placeholder="Name" class="author">
                         </div>
                         <div style="width:38%;float:right">
-                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('second-form');">
+                            <div class="fluid labeled icon button" onclick="ablog.formSubmit('second-form');">
                                 <i class="icon edit"></i>Reply
                             </div>
                         </div>

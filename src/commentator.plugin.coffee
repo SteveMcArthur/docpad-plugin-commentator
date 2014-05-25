@@ -15,7 +15,6 @@ module.exports = (BasePlugin) ->
             partial: pathUtil.join('node_modules','docpad-plugin-commentator','out','partials','comment.html.eco')
             
         copyFile: (source, target, cb) ->
-            console.log('copyFile')
             cbCalled = false
             done: (err) ->
                 console.log(err)
@@ -67,15 +66,12 @@ module.exports = (BasePlugin) ->
             style = config.stylePath
             styleContent = fs.readFileSync(style,'utf8')
             styleContent = styleContent.replace(/^\s+|\n\s*|\s+$/g,'')
-            console.log("Copying fonts...")
-            console.log(docpad.config.filesPaths[0])
             fontsOut = pathUtil.join(docpad.config.filesPaths[0],'fonts')
-            console.log(fontsOut)
             if !fs.existsSync(docpad.config.filesPaths[0])
                 fs.mkdirSync(docpad.config.filesPaths[0])
             if !fs.existsSync(fontsOut)
                 fs.mkdirSync(fontsOut)
-            files = ['commentator.eot','commentator.svg','commentator.ttf','commentator.woff']
+            files = ['commentator.eot','commentator.svg','commentator.ttf','commentator.woff','default-avatar.png']
             for filename in files
                 plugin.copyFile(pathUtil.join(config.fontsPath,filename),pathUtil.join(fontsOut,filename))
                 

@@ -3,7 +3,7 @@
         <%if @comment.avatar:%>
             <img src="<%=comment.avatar%>">
             <%else:%>
-                <img src="/img/avatar/default-avatar.png">
+                <img src="/fonts/default-avatar.png">
             <%end%>
     </a>
     <div class="content">
