@@ -6,18 +6,179 @@
 
 
 
-<div class="ui two column grid comments">
-    <div class="column">
-        <div class="ui piled blue segment">
-            <h2 class="ui header">
-        <i class="icon inverted circular teal comment"></i> Comments
-      </h2>
-            <div id="comments" class="ui comments">
+
+<div class="com">
+    <style>@font-face {font-weight: normal;font-style: normal;font-variant: normal;font-family: 'Icons';src: url(./fonts/commentator.eot);src: url(./fonts/commentator.eot?#iefix) format('embedded-opentype'), url(./fonts/commentator.svg#icons) format('svg'), url(../fonts/commentator.woff) format('woff'), url(./fonts/commentator.ttf) format('truetype');}.com {background-color: transparent;}.com .header {margin: 0.83em 0;font-size: 1.5em;}.com i.icon {speak: none;display: inline-block;-moz-box-sizing: border-box;-ms-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0em 0.25em 0em 0em;width: 1.23em;height: 1em;text-align: center;text-decoration: inherit;font-weight: normal;font-style: normal;font-family: 'Icons';line-height: 1;opacity: 0.75;}.com i.circular.icon {padding: 0.5em 0.35em !important;width: 2em !important;height: 2em !important;border-radius: 500em !important;-webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;line-height: 1 !important;}.com i.circular.inverted.icon {border: none;-webkit-box-shadow: none;box-shadow: none;}.com i.inverted.teal.icon {background-color: #00b5ad !important;color: #ffffff !important;}.com i.icon.comment:before {content: '\e800';}.com i.icon.edit:before {content: '\e801';}.com .comments .comment > .content,.com .comments .comment > .avatar {display: block;}.com .comments .comment .avatar {display: block;float: left;width: 4em;}.com .comments .comment .avatar img {display: block;margin: 0em auto;width: 3em;height: 3em;border-radius: 500px;}.com .comments .comment > .avatar ~ .content {margin-left: 3.5em;padding-top: 0.25em;}.com .comments .comment .avatar ~ .content {padding: 0 1em;}.com .comments .comment > .content,.com .comments .comment > .avatar {display: block;}.com .comments {padding-right: 50px;padding-left: 30px;}.com .comments .comment:first-child {margin-top: 0;padding-top: 0;}.com .comments .comment {position: relative;margin-top: 0.5em;padding-top: 0.5em;}.com .comments .comment .actions {font-size: 0.9em;}.com form {margin: 0;}.com .comments > .reply.form {margin-top: 1.5em;max-width: 40em;width: 100%;}.com .field {position: relative;}.com .field .placeholder {position: absolute;top: 7px;right: 9px;left: 10px;overflow: hidden;color: rgba(0, 39, 59, 0.34902);-ms-text-overflow: ellipsis;-o-text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;font-size: 18px;line-height: 30px;cursor: text;}.com textarea {border-width: 2px;border-color: #e0dbdb;border-radius: 0.4em;}.com p,.com pre {margin: 1em 0;}.com .hidden {display: none !important;}.com .comments .comment .metadata {display: inline-block;margin-left: 0.3em;color: rgba(0, 0, 0, 0.4);}.com .comments .comment .metadata > * {display: inline-block;margin: 0 0.3em 0 0;}.com .comments .reply.form textarea {height: 5em;}.com .comments .comment .actions a {display: inline-block;margin: 0 0.3em 0 0;color: rgba(0, 0, 0, 0.298039);}.com .comments a {cursor: pointer;}.com input[type="text"],.com textarea {-webkit-appearance: none;display: block;overflow: auto;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0px 0px 1rem;padding: 0.5rem;width: 100%;height: 2.3125rem;border: 1px solid #cccccc;background-color: white;-webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;color: rgba(0, 0, 0, 0.74902);vertical-align: top;font-size: 0.875rem;font-family: inherit;resize: vertical;-moz-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;-o-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;-webkit-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;transition: box-shadow 0.45s, border-color 0.45s ease-in-out;}.com .button {user-select: none;display: inline-block;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);-moz-user-select: none;-ms-user-select: none;-webkit-user-select: none;box-sizing: border-box;margin: 0;padding: 0.8em 1.5em;min-height: 1em;outline: none;border: none;border-radius: 0.25em;background-color: #fafafa;background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.0470588));-webkit-box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;color: #808080;vertical-align: middle;text-align: center;text-decoration: none;text-transform: uppercase;font-weight: bold;font-style: normal;font-size: 1rem;line-height: 1;cursor: pointer;-moz-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;-o-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;-webkit-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;}.com .buttons .button,.com .button {font-size: 1rem;}.com .icon.buttons .button,.com .icon.button {padding: 0.8em;}.com .labeled.icon.buttons .button,.com .labeled.icon.button {position: relative;padding-right: 1.4em !important;padding-left: 4em !important;}.com .blue.buttons .button,.com .blue.button {background-color: #6ecff5;color: #ffffff;}.com .fluid.buttons,.com .button.fluid,.com .fluid.buttons > .button {display: block;width: 100%;}.com input[text],.com input {height: 43px !important;border-width: 2px;border-color: #e0dbdb;border-radius: 0.4em;}.com .button > .icon {margin-right: 0.6em;line-height: 1;-moz-transition: opacity 0.1s ease;-o-transition: opacity 0.1s ease;-webkit-transition: opacity 0.1s ease;transition: opacity 0.1s ease;}.com .icon.buttons .button > .icon,.com .icon.button > .icon {margin: 0;vertical-align: top;opacity: 0.9;}.com .labeled.icon.buttons > .button > .icon,.com .labeled.icon.button > .icon {position: absolute;top: 0;left: 0;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;padding-top: 0.8em;width: 2.75em;height: 100%;border-radius: 0.25em 0 0 0.25em;background-color: rgba(0, 0, 0, 0.0470588);-webkit-box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;text-align: center;line-height: 1;}/*# sourceMappingURL=commentator.css.map */</style>
+            <h2 class="header">
+                <i class="icon inverted circular teal comment"></i> Comments
+            </h2>
+            <div id="comments" class="comments">
                 
-                <div id="no-comments"> 
+                <div id="no-comments">
                     <p>No comments yet</p>
                 </div>
                 
+                <div id="comment-template" style="display:none;">
+                        <div class="comment">
+                            <a class="avatar">
+                                    <img src="/img/avatar/default-avatar.png">
+                            </a>
+                            <div class="content">
+                                <a class="author"></a>
+                                <div class="metadata">
+                                    <span class="date"></span>
+                                    <span  class="float-right hidden slug"></span>
+                                    <span class="float-right hidden timeid"></span>
+                                    <span class="float-right hidden responseid"></span>
+                                </div>
+                                <div class="text">
+                                    
+                                </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                    <a class="delete hidden">Delete</a>
+                                    
+                                    <span class="float-right hidden">Inserted</span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <script>
+                    var deferCount = 0;
+                    function defer(method) {
+                        if (window.$)
+                            method();
+                        else if (deferCount < 50){
+                            deferCount ++;
+                            setTimeout(function() { defer(method) }, 50);
+                        }
+                    }
+                    
+                    function assignReplyForm(){
+                        //as this function is repeatedly called
+                        //each time a new comment is inserted
+                        //we need to remove any existing handlers
+                        $('.actions .reply').off('click');
+                        
+                        //now re-attach click handler
+                        $('.actions .reply').click(function(){
+                            var offset = $(this).offset();
+                            var parent = $(this).parent().parent();
+                            var left = offset.left-50;
+                            var top = offset.top+50;
+                            var form = $('#second-form');
+                            parent.append(form);
+                            form.fadeIn();
+                            
+                        });
+                        
+                    }
+                    function setPlaceHolders(){
+                        $('.field .placeholder').click(function(e){
+                            var txtarea =  $(this).siblings('textarea');
+                            $(this).hide();
+                            txtarea.focus();
+                            txtarea[0].selectionStart = 0;
+                            txtarea[0].selectionEnd = 0;
+            
+                        });
+                         $('textarea').click(function(){
+                            $(this).siblings('.placeholder').hide();
+                        });
+                         $('textarea').blur(function(){
+                           if($(this).val().length == 0){
+                              $('textarea').siblings('.placeholder').show();
+                           }
+                        });
+                        assignReplyForm();
+                    }
+                    
+                    defer(setPlaceHolders);
+                    
+                    var ablog = ablog || {};
+                    
+                    ablog.formSubmit = function(formId) {
+                        var form = $('#'+formId);
+                        var timeEl = form.parent().find('.timeid');
+                        var responseId = null;
+                        var url = form.attr('action');
+                        if(formId === 'second-form'){
+                            responseId = timeEl.text();
+                            form.fadeOut();
+                        }
+                        msg = {
+                            "author": form.find('.author').val(),
+                            "slug": form.find('.slug').val(),
+                            "content": form.find('.content').val(),
+                            "responseid": responseId
+                        };
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: msg,
+                            success: function(data,status){
+                                $('#no-comments').remove();
+                                var template = $('#comment-template').children().clone();
+                                template.find('.author').html(data.meta.author);
+                                template.find('.date').html(new Date(data.meta.date).toDateString());
+                                template.find('.text').html(data.data);
+                                template.find('.slug').html(data.meta.postslug);
+                                template.find('.timeid').html(data.meta.timeid);
+                                template.find('.comment').attr('id',data.meta.timeid);
+                                
+                                if (data.meta.responseid){
+                                    template.find('.responseid').html(data.meta.responseId);
+                                    $('#'+data.meta.responseid+' .content').append(template);
+                                }
+                                else{
+                                    $('#comments').prepend(template);
+                                }
+                                
+                                assignReplyForm();
+                            }
+                        });
+                    }
+                </script>
+      
+                <form id='main-form' action="/comments" method="POST" class="reply form">
+                   
+                    <div class="field">
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
+                    </div>
+                    <input name="slug" type="hidden" value="index"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input name="author" type="text" value="" placeholder="Name"   class="author">
+                        </div>
+                        <div style="width:38%;float:right">
+                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                                <i class="icon edit"></i>Add Comment
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <form id='second-form' action="/comments" method="POST" class="reply form" style="display:none;">
+                    <div class="field">
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
+                    </div>
+                    <input name="slug" type="hidden" value="index"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input  name="author" type="text" value="" placeholder="Name" class="author">
+                        </div>
+                        <div style="width:38%;float:right">
+                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('second-form');">
+                                <i class="icon edit"></i>Reply
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    </div>
 </body>
 
 </html>

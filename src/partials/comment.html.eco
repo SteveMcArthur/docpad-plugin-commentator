@@ -1,21 +1,22 @@
 <%responses = @allComments.findAll({responseid:{$exists: true}},{date:-1})%>
 <%comments =  @allComments.findAll({responseid:{$exists: false}},{date:-1})%>
 <%imgPath = "./"%>
-<div class="ui two column grid comments">
-    <div class="column">
-        <div class="ui piled blue segment">
-            <h2 class="ui header">
-        <i class="icon inverted circular teal comment"></i> Comments
-      </h2>
-            <div id="comments" class="ui comments">
+
+<div class="com">
+    <style><%-@styleContent%></style>
+            <h2 class="header">
+                <i class="icon inverted circular teal comment"></i> Comments
+            </h2>
+            <div id="comments" class="comments">
                 <% if comments.length is 0: %>
-                <div id="no-comments"> 
+                <div id="no-comments">
                     <p>No comments yet</p>
                 </div>
                 <% else: %>
                   <% for comment in comments.toJSON():%>
                     <%obj = {comment:comment,responses:responses,baseComment:@baseComment,eco:@eco}%>
                     <%-@eco.render(@baseComment,obj)%>
+                  <%end%>
                 <%end%>
                 <div id="comment-template" style="display:none;">
                         <div class="comment">
@@ -140,7 +141,7 @@
                     }
                 </script>
       
-                <form id='main-form' action="/comments" method="POST" class="ui reply form">
+                <form id='main-form' action="/comments" method="POST" class="reply form">
                    
                     <div class="field">
                         <span class="placeholder">Join the discussion...</span>
@@ -152,14 +153,14 @@
                             <input name="author" type="text" value="" placeholder="Name"   class="author">
                         </div>
                         <div style="width:38%;float:right">
-                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
                                 <i class="icon edit"></i>Add Comment
                             </div>
                         </div>
                     </div>
                 </form>
                 
-                <form id='second-form' action="/comments" method="POST" class="ui reply form" style="display:none;">
+                <form id='second-form' action="/comments" method="POST" class="reply form" style="display:none;">
                     <div class="field">
                         <span class="placeholder">Join the discussion...</span>
                         <textarea name="content" class="content"></textarea>
@@ -170,14 +171,11 @@
                             <input  name="author" type="text" value="" placeholder="Name" class="author">
                         </div>
                         <div style="width:38%;float:right">
-                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('second-form');">
+                            <div class="fluid blue labeled icon button" onclick="ablog.formSubmit('second-form');">
                                 <i class="icon edit"></i>Reply
                             </div>
                         </div>
                     </div>
                 </form>
-         
             </div>
-        </div>
     </div>
-</div>

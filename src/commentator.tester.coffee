@@ -76,6 +76,7 @@ module.exports = (testers) ->
                 now = new Date()
                 nowTime = now.getTime()
                 nowString = now.toString()
+                console.log("URL: "+postUrl)
 
                 # Post
                 test "post a new comment to #{postUrl}", (done) ->
@@ -89,7 +90,10 @@ module.exports = (testers) ->
                         )
                         .timeout(30*1000)
                         .end (err,res) ->
-                            return done(err)  if err
+                            if err
+                                console.log("ERROR.......")
+                                console.log(err)
+                                return done(err)
 
                             # Generated
                             generated = true
@@ -105,7 +109,6 @@ module.exports = (testers) ->
                             actual.meta.timeid = timeid
                             actual.meta.fullPath = actual.meta.fullPath.replace(/[0-9]+/, timeid)
                             
-                            console.log(actual)
                             
                             expected =
                                 data: 'Text of comment',
