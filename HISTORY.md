@@ -1,5 +1,6 @@
 # History
-
+- v2.0.3 May 25, 2014
+    -  Code to copy font files to src/files/fonts
 - v2.0.2 May 25, 2014
 	-  CSS re-namespaced and now injected into eco template so that styling is independent of page. Fixed issue with form not showing when no comments.
 
