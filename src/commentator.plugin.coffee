@@ -2,7 +2,7 @@
 module.exports = (BasePlugin) ->
     # Define Plugin
     pathUtil = require('path')
-    fs = require('fs')
+    fops = require('./fileOps')
     class Commentator extends BasePlugin
         # Plugin Name
         name: 'commentator'
@@ -12,48 +12,7 @@ module.exports = (BasePlugin) ->
             relativeDirPath: 'comments'
             postUrl: '/comments'
             extension: '.html.md'
-            partial: pathUtil.join('node_modules','docpad-plugin-commentator','out','partials','comment.html.eco')
-            
-        copyFile: (source, target, cb) ->
-            cbCalled = false
-            done: (err) ->
-                console.log(err)
-                if !cbCalled
-                    cb(err)
-                    cbCalled = true
-                    
-            rd = fs.createReadStream(source)
-            rd.on "error", (err) ->
-                done(err)
 
-            wr = fs.createWriteStream(target)
-            wr.on "error", (err) ->
-                done(err)
-            wr.on "close", (ex) ->
-                done()
-
-            rd.pipe(wr)
-
-
-        setConfigPaths:(pathToPartial) ->
-            pathToBase = pathToPartial.replace('comment.html.eco','commentbase.html.eco')
-            stylePath = pathToPartial.replace(/partials(\/|\\)comment\.html\.eco/,'commentator.css')
-            fontsPath =  pathToPartial.replace(/partials(\/|\\)comment\.html\.eco/,'fonts')
-            commentsPath = pathUtil.join(@docpad.config.documentsPaths[0],'comments')
-            if !fs.existsSync(commentsPath)
-                fs.mkdirSync(commentsPath)
-            @.setConfig({pathToPartial:pathToPartial,pathToBase:pathToBase,stylePath:stylePath,fontsPath:fontsPath})
-        
-        setPartialPaths: ->
-            plugin = @
-            docpad = plugin.docpad
-            pathToPartial = pathUtil.join(docpad.config.rootPath,plugin.getConfig().partial)
-            if !fs.existsSync(pathToPartial)
-                pathToPartial = pathToPartial.replace('node_modules','plugins')
-                if !fs.existsSync(pathToPartial)
-                    pathToPartial = pathUtil.join(docpad.config.pluginPaths[0],'out','partials','comment.html.eco')
-
-            plugin.setConfigPaths(pathToPartial)
             
         # Extend Template Data
         # Add our form to our template data
@@ -61,32 +20,17 @@ module.exports = (BasePlugin) ->
             # Prepare
             plugin = @
             docpad = plugin.docpad
-            @setPartialPaths()
-            config = plugin.getConfig()
-            style = config.stylePath
-            styleContent = fs.readFileSync(style,'utf8')
-            styleContent = styleContent.replace(/^\s+|\n\s*|\s+$/g,'')
-            fontsOut = pathUtil.join(docpad.config.filesPaths[0],'fonts')
-            if !fs.existsSync(docpad.config.filesPaths[0])
-                fs.mkdirSync(docpad.config.filesPaths[0])
-            if !fs.existsSync(fontsOut)
-                fs.mkdirSync(fontsOut)
-            files = ['commentator.eot','commentator.svg','commentator.ttf','commentator.woff','default-avatar.png']
-            for filename in files
-                plugin.copyFile(pathUtil.join(config.fontsPath,filename),pathUtil.join(fontsOut,filename))
+            config = fops.getTemplateData docpad
+            plugin.setConfig(config)
                 
-            
             # getCommentsBlock
             templateData.getCommentsBlock = ->
                 @referencesOthers()
-                
+                config = plugin.getConfig()
                 eco = require('eco')
-                blockHtml = fs.readFileSync(plugin.getConfig().pathToPartial,'utf8')
-                baseComment = fs.readFileSync(plugin.getConfig().pathToBase,'utf8')
                 pageComments = docpad.getCollection(plugin.getConfig().collectionName).findAll({'postslug': @document.slug},[date:-1])
-                obj = {baseComment:baseComment,eco:eco,allComments: pageComments,document:@document,styleContent:styleContent}
-                blockHtml = eco.render(blockHtml,obj)
-                return blockHtml
+                obj = {baseComment:config.baseComment,eco:eco,allComments: pageComments,document:@document,styleContent:config.styleContent}
+                eco.render(config.blockHtml,obj)
 
             # getComments using the document slug
             templateData.getComments = ->
@@ -149,10 +93,7 @@ module.exports = (BasePlugin) ->
                     meta+= key+": "+val+"\r\n"
                 content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.data
              
-                fs.writeFile outFile, content, (err) ->
-                    if err
-                        console.log(err)
-                        return next(err2)
+                fops.writeFile outFile, content
                 
                 # send the update back to the page to
                 # be updated client side
