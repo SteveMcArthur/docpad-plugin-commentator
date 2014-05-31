@@ -49,6 +49,7 @@ fileOps =
             pathToPartial = pathToPartial.replace 'node_modules','plugins'
             if !fs.existsSync pathToPartial
                 pathToPartial = pathUtil.join docpad.config.pluginPaths[0],'out','partials','comment.html.eco'
+                console.log pathToPartial
                 if !fs.existsSync pathToPartial
                     throw new Error("Cannot find path to commentator partial")
         pathToPartial
