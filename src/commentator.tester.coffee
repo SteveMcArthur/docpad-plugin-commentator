@@ -5,6 +5,7 @@ module.exports = (testers) ->
     superAgent = require('superagent')
     rimraf = require('rimraf')
     pathUtil = require('path')
+    {wait, repeat, doAndRepeat, waitUntil} = require('wait')
 
     # Define My Tester
     class MyTester extends testers.ServerTester
@@ -18,11 +19,12 @@ module.exports = (testers) ->
             # Prepare
             tester = @
             
-            # Cleanup native comments
+            # Cleanup existingcomments
             @test "clean commentator", (done) ->
                 rimraf pathUtil.join(tester.getConfig().testPath, 'src', 'documents', 'comments'), (err) ->
+                    return
+                rimraf pathUtil.join(tester.getConfig().testPath, 'src', 'files', 'fonts'), (err) ->
                     done()  # ignore errors
-
             # Chain
             @
 
@@ -38,28 +40,17 @@ module.exports = (testers) ->
             @
 
         # Test Generate
-        testGenerate: testers.RendererTester::testGenerate
+        #testGenerate: testers.RendererTester::testGenerate
 
         # Custom test for the server
         testServer: (next) ->
             # Prepare
             tester = @
             generated = false
+            fs = require('fs')
 
             # Create the server
             super
-
-            ###
-            # Watch
-            @test 'watch', (done) ->
-                tester.docpad.action 'watch', (err) ->
-                    return done(err)  if err
-                    # Ensure enough time for watching to complete
-                    setTimeout(
-                        -> done()
-                        5*1000
-                    )
-            ###
 
             # Test
             @suite 'commentator', (suite,test) ->
@@ -69,14 +60,15 @@ module.exports = (testers) ->
                 docpadConfig = docpad.getConfig()
                 plugin = tester.getPlugin()
                 pluginConfig = plugin.getConfig()
+                output = pathUtil.join(tester.getConfig().testPath, 'src','documents','comments')
+                commentPath = ""
 
                 # Prepare
                 baseUrl = "http://localhost:#{docpadConfig.port}"
                 postUrl = "#{baseUrl}/comments"
                 now = new Date()
                 nowTime = now.getTime()
-                nowString = now.toString()
-                console.log("URL: "+postUrl)
+                nowString = now.toString()        
 
                 # Post
                 test "post a new comment to #{postUrl}", (done) ->
@@ -101,12 +93,14 @@ module.exports = (testers) ->
                             # Cleanup
                             nowTime = parseInt(nowTime/1000)
                             if res.body?.meta?.fullPath
+                                commentPath = res.body.meta.fullPath
                                 res.body.meta.fullPath = res.body.meta.fullPath.replace(/.+documents/, 'trimmed')
 
                             # Compare
                             actual = res.body
                             timeid = parseInt(actual.meta.timeid /1000)
                             actual.meta.timeid = timeid
+                            
                             actual.meta.fullPath = actual.meta.fullPath.replace(/[0-9]+/, timeid)
                             
                             
@@ -119,13 +113,111 @@ module.exports = (testers) ->
                                     timeid: nowTime,
                                     fullPath: 'trimmed\\comments\\'+nowTime+'.html.md'
                                     
-                            console.log(expected)
                             # Check
                             expect(actual).to.deep.equal(expected)
-                            done()
+                            wait 2*1000, ->                                   
+                                console.log "wait ended"
+                                done()
+                            
+                test "comments folder exists", (done) ->
+                    b = fs.existsSync(output)
+                    expect(b).to.equal(true)                  
+                    done() 
+                    
+                test "comments file exists", (done) ->
+                    b = fs.existsSync(commentPath)
+                    expect(b).to.equal(true)                  
+                    done() 
+                    
+                test "fonts folder exists", (done) ->
+                    fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
+                    b = fs.existsSync(fontPath)
+                    expect(b).to.equal(true)                  
+                    done()
+                    
+                test "fonts files exists", (done) ->
+                    fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
+                    files = fs.readdirSync(fontPath)
+                    expect(files).to.have.length(5)                  
+                    done() 
+                
+                test "docpad generate", (done) ->           
+                    docpad.action('generate') 
+                    done()
 
-            # Cleanup
-            @cleanup()
+    
 
             # Chain
             @
+            
+        testCustom: (next) ->
+            tester = @ 
+            fs = require('fs')
+            # Test
+            @suite 'output', (suite,test) ->
+                
+                
+                cheerio = require('cheerio')
+                output = pathUtil.join(tester.getConfig().testPath, 'out', 'index.html')
+                $ = {}
+
+                test "index.html exists", (done) ->
+                  
+                    b = fs.existsSync(output)
+                    expect(b).to.equal(true)                  
+                    done()
+                    
+                 test "check style tag first child of div.com", (done) ->
+                   
+                    content = fs.readFileSync(output,{encoding:'utf8'})
+                    $ = cheerio.load(content)
+                    el = $('.com > style')
+                    expect(el).to.have.length(1)                  
+                    done()
+                    
+                test "two script tags", (done) ->
+                        el = $('script')
+                        expect(el).to.have.length(1)
+                        done()
+                 
+                test "have comment template", (done) ->
+                        el = $('#comment-template')
+                        expect(el).to.have.length(1)
+                        done()
+                        
+                test "have comment main form", (done) ->
+                        el = $('#main-form')
+                        expect(el).to.have.length(1)
+                        done()
+                        
+                test "have comment second form", (done) ->
+                        el = $('#second-form')
+                        expect(el).to.have.length(1)
+                        done()
+                        
+                test "have comment two forms", (done) ->
+                        el = $('form')
+                        expect(el).to.have.length(2)
+                        done()
+                        
+                test "have comments div", (done) ->
+                        el = $('#comments')
+                        expect(el).to.have.length(1)
+                        el = $('div.comments')
+                        expect(el).to.have.length(1)
+                        done()
+                test "forms have action attribute '/comments", (done) ->
+                        el = $('form[action="/comments"]')
+                        #console.log el.length
+                        expect(el).to.have.length(2)
+                        done()
+                        
+            
+                 
+                
+                
+                    
+            # Cleanup
+            @cleanup()
+            
+            

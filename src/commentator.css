@@ -1,282 +1,288 @@
 @font-face {
-  font-weight: normal;
-  font-style: normal;
-  font-variant: normal;
-  font-family: 'Icons';
-  src: url(./fonts/commentator.eot);
-  src: url(./fonts/commentator.eot?#iefix) format('embedded-opentype'), url(./fonts/commentator.svg#icons) format('svg'), url(../fonts/commentator.woff) format('woff'), url(./fonts/commentator.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-family: 'Icons';
+    src: url(./fonts/commentator.eot);
+    src: url(./fonts/commentator.eot?#iefix) format('embedded-opentype'), url(./fonts/commentator.svg#icons) format('svg'), url(../fonts/commentator.woff) format('woff'), url(./fonts/commentator.ttf) format('truetype');
 }
 .com {
-  background-color: transparent;
+    background-color: transparent;
 }
 .com .header {
-  margin: 0.83em 0;
-  font-size: 1.5em;
+    margin: 0.83em 0;
+    font-size: 1.5em;
 }
 .com i.icon {
-  speak: none;
-  display: inline-block;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0em 0.25em 0em 0em;
-  width: 1.23em;
-  height: 1em;
-  text-align: center;
-  text-decoration: inherit;
-  font-weight: normal;
-  font-style: normal;
-  font-family: 'Icons';
-  line-height: 1;
-  opacity: 0.75;
+    speak: none;
+    display: inline-block;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0em 0.25em 0em 0em;
+    width: 1.23em;
+    height: 1em;
+    text-align: center;
+    text-decoration: inherit;
+    font-weight: normal;
+    font-style: normal;
+    font-family: 'Icons';
+    line-height: 1;
+    opacity: 0.75;
 }
 .com i.circular.icon {
-  padding: 0.5em 0.35em !important;
-  width: 2em !important;
-  height: 2em !important;
-  border-radius: 500em !important;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;
-  box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;
-  line-height: 1 !important;
+    padding: 0.5em 0.35em !important;
+    width: 2em !important;
+    height: 2em !important;
+    border-radius: 500em !important;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0 0 0 0.1em inset;
+    line-height: 1 !important;
 }
 .com i.circular.inverted.icon {
-  border: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 .com i.inverted.icon {
-  background-color: #00b5ad !important;
-  color: #ffffff !important;
+    background-color: #00b5ad !important;
+    color: #ffffff !important;
 }
 .com i.icon.comment:before {
-  content: '\e800';
+    content: '\e800';
 }
 .com i.icon.edit:before {
-  content: '\e801';
+    content: '\e801';
 }
 .com .comments .comment > .content,
 .com .comments .comment > .avatar {
-  display: block;
+    display: block;
 }
 .com .comments .comment .avatar {
-  display: block;
-  float: left;
-  width: 4em;
+    display: block;
+    float: left;
+    width: 4em;
 }
 .com .comments .comment .avatar img {
-  display: block;
-  margin: 0em auto;
-  width: 3em;
-  height: 3em;
-  border-radius: 500px;
+    display: block;
+    margin: 0em auto;
+    width: 3em;
+    height: 3em;
+    border-radius: 500px;
 }
 .com .comments .comment > .avatar ~ .content {
-  margin-left: 3.5em;
-  padding-top: 0.25em;
+    margin-left: 3.5em;
+    padding-top: 0.25em;
 }
 .com .comments .comment .avatar ~ .content {
-  padding: 0 1em;
+    padding: 0 1em;
 }
 .com .comments .comment > .content,
 .com .comments .comment > .avatar {
-  display: block;
+    display: block;
 }
 .com .comments {
-  padding-right: 50px;
-  padding-left: 30px;
+    padding-right: 50px;
+    padding-left: 30px;
 }
 .com .comments .comment:first-child {
-  margin-top: 0;
-  padding-top: 0;
+    margin-top: 0;
+    padding-top: 0;
 }
 .com .comments .comment {
-  position: relative;
-  margin-top: 0.5em;
-  padding-top: 0.5em;
+    position: relative;
+    margin-top: 0.5em;
+    padding-top: 0.5em;
 }
 .com .comments .comment .actions {
-  font-size: 0.9em;
+    font-size: 0.9em;
 }
 .com form {
-  margin: 0;
+    margin: 0;
 }
 .com .comments > .reply.form {
-  margin-top: 1.5em;
-  max-width: 40em;
-  width: 100%;
+    margin-top: 1.5em;
+    max-width: 40em;
+    width: 100%;
 }
 .com .field {
-  position: relative;
+    position: relative;
 }
 .com .field .placeholder {
-  position: absolute;
-  top: 7px;
-  right: 9px;
-  left: 10px;
-  overflow: hidden;
-  color: rgba(0, 39, 59, 0.34902);
-  -ms-text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 18px;
-  line-height: 30px;
-  cursor: text;
+    position: absolute;
+    top: 7px;
+    right: 9px;
+    left: 10px;
+    overflow: hidden;
+    color: rgba(0, 39, 59, 0.34902);
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    line-height: 30px;
+    cursor: text;
 }
 .com textarea {
-  border-width: 2px;
-  border-color: #e0dbdb;
-  border-radius: 0.4em;
+    border-width: 2px;
+    border-color: #e0dbdb;
+    border-radius: 0.4em;
 }
 .com p,
 .com pre {
-  margin: 1em 0;
+    margin: 1em 0;
 }
 .com .hidden {
-  display: none !important;
+    display: none !important;
 }
 .com .comments .comment .metadata {
-  display: inline-block;
-  margin-left: 0.3em;
-  color: rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    margin-left: 0.3em;
+    color: rgba(0, 0, 0, 0.4);
 }
 .com .comments .comment .metadata > * {
-  display: inline-block;
-  margin: 0 0.3em 0 0;
+    display: inline-block;
+    margin: 0 0.3em 0 0;
 }
 .com .comments .reply.form textarea {
-  height: 5em;
+    height: 5em;
 }
 .com .comments .comment .actions a {
-  display: inline-block;
-  margin: 0 0.3em 0 0;
-  color: rgba(0, 0, 0, 0.298039);
+    display: inline-block;
+    margin: 0 0.3em 0 0;
+    color: rgba(0, 0, 0, 0.298039);
 }
 .com .comments a {
-  cursor: pointer;
+    cursor: pointer;
 }
 .com input[type="text"],
 .com textarea {
-  -webkit-appearance: none;
-  display: block;
-  overflow: auto;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0px 0px 1rem;
-  padding: 0.5rem;
-  width: 100%;
-  height: 2.3125rem;
-  border: 1px solid #cccccc;
-  background-color: white;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;
-  box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;
-  color: rgba(0, 0, 0, 0.74902);
-  vertical-align: top;
-  font-size: 0.875rem;
-  font-family: inherit;
-  resize: vertical;
-  -moz-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
-  -o-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
-  -webkit-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
-  transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
+    -webkit-appearance: none;
+    display: block;
+    overflow: auto;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0px 0px 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    height: 2.3125rem;
+    border: 1px solid #cccccc;
+    background-color: white;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0 1px 2px inset;
+    color: rgba(0, 0, 0, 0.74902);
+    vertical-align: top;
+    font-size: 0.875rem;
+    font-family: inherit;
+    resize: vertical;
+    -moz-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
+    -o-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
+    -webkit-transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
+    transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
 }
 .com .button {
-  user-select: none;
-  display: inline-block;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0.8em 1.5em;
-  min-height: 1em;
-  outline: none;
-  border: none;
-  border-radius: 0.25em;
-  background-color: #fafafa;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.0470588));
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;
-  box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;
-  color: #808080;
-  vertical-align: middle;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-style: normal;
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  -moz-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  -o-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  -webkit-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    user-select: none;
+    display: inline-block;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.8em 1.5em;
+    min-height: 1em;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    background-color: #fafafa;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.0470588));
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;
+    box-shadow: rgba(0, 0, 0, 0.0784314) 0px 0px 0px 1px inset;
+    color: #808080;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    -moz-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    -o-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    -webkit-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 .com .buttons .button,
 .com .button {
-  font-size: 1rem;
-  background-color: #00b5ad;
-  color: #ffffff;
+    font-size: 1rem;
+    background-color: #00b5ad;
+    color: #ffffff;
+}
+.com .buttons .button:hover,
+.com .button:hover,
+.com .buttons .button:active,
+.com .button:active {
+    background-color: #009A93;
+    color: #ffffff;
 }
 .com .icon.buttons .button,
 .com .icon.button {
-  padding: 0.8em;
+    padding: 0.8em;
 }
 .com .labeled.icon.buttons .button,
 .com .labeled.icon.button {
-  position: relative;
-  padding-right: 1.4em !important;
-  padding-left: 4em !important;
+    position: relative;
+    padding-right: 1.4em !important;
+    padding-left: 4em !important;
 }
-
 .com .fluid.buttons,
 .com .button.fluid,
 .com .fluid.buttons > .button {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
 .com input[text],
 .com input {
-  height: 43px !important;
-  border-width: 2px;
-  border-color: #e0dbdb;
-  border-radius: 0.4em;
+    height: 43px !important;
+    border-width: 2px;
+    border-color: #e0dbdb;
+    border-radius: 0.4em;
 }
 .com .button > .icon {
-  margin-right: 0.6em;
-  line-height: 1;
-  -moz-transition: opacity 0.1s ease;
-  -o-transition: opacity 0.1s ease;
-  -webkit-transition: opacity 0.1s ease;
-  transition: opacity 0.1s ease;
+    margin-right: 0.6em;
+    line-height: 1;
+    -moz-transition: opacity 0.1s ease;
+    -o-transition: opacity 0.1s ease;
+    -webkit-transition: opacity 0.1s ease;
+    transition: opacity 0.1s ease;
 }
 .com .icon.buttons .button > .icon,
 .com .icon.button > .icon {
-  margin: 0;
-  vertical-align: top;
-  opacity: 0.9;
+    margin: 0;
+    vertical-align: top;
+    opacity: 0.9;
 }
 .com .labeled.icon.buttons > .button > .icon,
 .com .labeled.icon.button > .icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-top: 0.8em;
-  width: 2.75em;
-  height: 100%;
-  border-radius: 0.25em 0 0 0.25em;
-  background-color: rgba(0, 0, 0, 0.0470588);
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;
-  box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;
-  text-align: center;
-  line-height: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-top: 0.8em;
+    width: 2.75em;
+    height: 100%;
+    border-radius: 0.25em 0 0 0.25em;
+    background-color: rgba(0, 0, 0, 0.0470588);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;
+    box-shadow: rgba(0, 0, 0, 0.0470588) -1px 0 0 0 inset;
+    text-align: center;
+    line-height: 1;
 }
 /*# sourceMappingURL=commentator.css.map */

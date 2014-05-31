@@ -30,12 +30,14 @@
     "docpad": ">=6.46 <7"
   },
   "devDependencies": {
-    "rimraf": "~2.2.2",
     "chai": "~1.7.2",
-    "superagent": "~0.15.4",
+    "cheerio": "^0.16.0",
     "coffee-script": "~1.6.2",
     "docpad": ">=6.46 <7",
-    "projectz": "~0.3.9"
+    "projectz": "~0.3.9",
+    "rimraf": "~2.2.2",
+    "superagent": "~0.15.4",
+    "wait": "^0.1.0"
   },
   "main": "./out/commentator.plugin.js",
   "scripts": {

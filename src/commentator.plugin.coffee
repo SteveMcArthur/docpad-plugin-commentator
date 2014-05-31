@@ -13,13 +13,17 @@ module.exports = (BasePlugin) ->
             postUrl: '/comments'
             extension: '.html.md'
 
-            
+        testFunction: ->
+            txt = "In test Function"
+            console.log txt
+            return txt
         # Extend Template Data
         # Add our form to our template data
         extendTemplateData: ({templateData}) ->
             # Prepare
             plugin = @
             docpad = plugin.docpad
+            
             config = fops.getTemplateData docpad
             plugin.setConfig(config)
                 
