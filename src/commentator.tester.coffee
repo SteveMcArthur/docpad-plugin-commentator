@@ -154,8 +154,7 @@ module.exports = (testers) ->
             tester = @ 
             fs = require('fs')
             # Test
-            @suite 'output', (suite,test) ->
-                
+            @suite 'output', (suite,test) ->            
                 
                 cheerio = require('cheerio')
                 output = pathUtil.join(tester.getConfig().testPath, 'out', 'index.html')
