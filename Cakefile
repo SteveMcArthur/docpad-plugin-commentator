@@ -52,6 +52,28 @@ for own key,value of config
 
 {spawn, exec} = require('child_process')
 
+
+copyFile = (source, target) ->
+
+    cbCalled = false
+    done = (err) ->
+        console.log(err)
+        #throw err
+                    
+    rd = fsUtil.createReadStream(source)
+    rd.on "error", (err) ->
+        console.log("READ ERROR")
+        done(err)
+
+    wr = fsUtil.createWriteStream(target)
+    wr.on "error", (err) ->
+        console.log("WRITE ERROR")
+        done(err)
+    wr.on "close", (ex) ->
+        done()
+    rd.pipe(wr)
+
+
 safe = (next,fn) ->
     next ?= (err) -> console.log(err.stack ? err)
     fn ?= next  # support only one argument
@@ -130,15 +152,28 @@ actions =
         step1 = ->
             console.log('cake install')
             actions.install(opts, safe next, step2)
+            
         step2 = ->
             return step3()  if !config.COFFEE_SRC_PATH or !fsUtil.existsSync(COFFEE)
             console.log('coffee compile')
             spawn(COFFEE, ['-co', config.COFFEE_OUT_PATH, config.COFFEE_SRC_PATH], {stdio:'inherit', cwd:APP_PATH}).on('close', safe next, step3)
+            
         step3 = ->
             return step4()  if !config.DOCPAD_SRC_PATH or !fsUtil.existsSync(DOCPAD)
             console.log('docpad generate')
             spawn(DOCPAD, ['generate'], {stdio:'inherit', cwd:APP_PATH}).on('close', safe next, step4)
-        step4 = next
+            
+        step4 = ->
+            partialPathSrc = pathUtil.join(config.COFFEE_SRC_PATH,'partials')
+            partialPathOut = pathUtil.join(config.COFFEE_OUT_PATH,'partials')
+            if !fsUtil.existsSync(config.COFFEE_OUT_PATH)
+                fsUtil.mkdirSync(config.COFFEE_OUT_PATH)
+            if !fsUtil.existsSync(partialPathOut)
+                fsUtil.mkdirSync(partialPathOut)
+            copyFile(pathUtil.join(partialPathSrc,'comment.html.eco'),pathUtil.join(partialPathOut,'comment.html.eco'))
+            copyFile(pathUtil.join(partialPathSrc,'commentbase.html.eco'),pathUtil.join(partialPathOut,'commentbase.html.eco'))
+            copyFile(pathUtil.join(config.COFFEE_SRC_PATH,'commentator.css'),pathUtil.join(config.COFFEE_OUT_PATH,'commentator.css'))
+            next()
 
         # Start
         step1()

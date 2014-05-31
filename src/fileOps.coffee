@@ -41,15 +41,12 @@ fileOps =
     #find where the comment partials are stored
     #may be in the standard 'node_modules' or 'plugin' folders, or the 'out' folder for tests
     findPathToPartial: (docpad) ->
-        console.log "findPathToPartial"
-        console.log docpad.config.rootPath
         pathToPartial = pathUtil.join docpad.config.rootPath,@config.partial
         console.log pathToPartial
         if !fs.existsSync pathToPartial
             pathToPartial = pathToPartial.replace 'node_modules','plugins'
             if !fs.existsSync pathToPartial
                 pathToPartial = pathUtil.join docpad.config.pluginPaths[0],'out','partials','comment.html.eco'
-                console.log pathToPartial
                 if !fs.existsSync pathToPartial
                     throw new Error("Cannot find path to commentator partial")
         pathToPartial

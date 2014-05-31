@@ -24,6 +24,8 @@ module.exports = (testers) ->
                 rimraf pathUtil.join(tester.getConfig().testPath, 'src', 'documents', 'comments'), (err) ->
                     return
                 rimraf pathUtil.join(tester.getConfig().testPath, 'src', 'files', 'fonts'), (err) ->
+                    return
+                 rimraf pathUtil.join(tester.getConfig().testPath, 'out'), (err) ->
                     done()  # ignore errors
             # Chain
             @
@@ -48,9 +50,12 @@ module.exports = (testers) ->
             tester = @
             generated = false
             fs = require('fs')
+           
 
             # Create the server
             super
+            
+           
 
             # Test
             @suite 'commentator', (suite,test) ->
@@ -66,12 +71,13 @@ module.exports = (testers) ->
                 # Prepare
                 baseUrl = "http://localhost:#{docpadConfig.port}"
                 postUrl = "#{baseUrl}/comments"
-                now = new Date()
-                nowTime = now.getTime()
-                nowString = now.toString()        
+          
 
                 # Post
                 test "post a new comment to #{postUrl}", (done) ->
+                    now = new Date()
+                    nowTime = now.getTime()
+                    nowString = now.toString()  
                     superAgent
                         .post(postUrl)
                         .type('json').set('Accept', 'application/json')
