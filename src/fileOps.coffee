@@ -56,8 +56,8 @@ fileOps =
         commentsPath = pathUtil.join docpad.config.documentsPaths[0],'comments'
         console.log "comments path"
         console.log commentsPath
-        fs.ensurePath commentsPath,(err) ->
-            return throw err  if err
+        if !fs.existsSync commentsPath
+            fs.mkdirSync commentsPath
     
     #find the .eco partials and styles required for comments
     getTemplateData: (docpad) ->

@@ -44,6 +44,7 @@ module.exports = (testers) ->
         # Test Generate
         #testGenerate: testers.RendererTester::testGenerate
         # Test Generate
+        ###
         testGenerate: ->
             # Prepare
             tester = @
@@ -55,6 +56,7 @@ module.exports = (testers) ->
 
         # Chain
         @
+        ###
 
         # Custom test for the server
         testServer: (next) ->
@@ -136,7 +138,10 @@ module.exports = (testers) ->
                     
                             # Check
                             expect(actual).to.deep.equal(expected)
-                            done()
+                            wait 2*1000, ->
+                                console.log "wait ended"
+                                done()
+
                 
                   
                             
