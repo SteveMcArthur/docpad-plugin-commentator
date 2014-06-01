@@ -78,6 +78,7 @@ module.exports = (testers) ->
                     now = new Date()
                     nowTime = now.getTime()
                     nowString = now.toString()
+                    console.log "post comment..."
                     superAgent
                         .post(postUrl)
                         .type('json').set('Accept', 'application/json')
@@ -88,6 +89,7 @@ module.exports = (testers) ->
                         )
                         .timeout(30*1000)
                         .end (err,res) ->
+                            console.log "post comment end method"
                             if err
                                 console.log("ERROR.......")
                                 console.log(err)
