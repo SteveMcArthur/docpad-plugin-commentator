@@ -103,7 +103,9 @@ module.exports = (testers) ->
                             if res.body?.meta?.fullPath
                                 commentPath = res.body.meta.fullPath
                                 res.body.meta.fullPath = res.body.meta.fullPath.replace(/.+documents/, 'trimmed')
-
+                                
+                            console.log "fixed res.body.meta.fullPath"
+                            
                             # Compare
                             actual = res.body
                             timeid = parseInt(actual.meta.timeid /1000)
@@ -111,7 +113,7 @@ module.exports = (testers) ->
                             
                             actual.meta.fullPath = actual.meta.fullPath.replace(/[0-9]+/, timeid)
                             
-                            
+                            console.log "build expected object"
                             expected =
                                 data: 'Text of comment',
                                 meta:
@@ -121,6 +123,7 @@ module.exports = (testers) ->
                                     timeid: nowTime,
                                     fullPath: 'trimmed\\comments\\'+nowTime+'.html.md'
                                     
+                            console.log "comparing data"
                             # Check
                             expect(actual).to.deep.equal(expected)
                             done()
