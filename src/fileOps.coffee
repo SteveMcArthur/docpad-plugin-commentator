@@ -54,8 +54,6 @@ fileOps =
     #make sure the comments folder exists in the 'documents' folder
     checkCommentsPath: (docpad) ->
         commentsPath = pathUtil.join docpad.config.documentsPaths[0],'comments'
-        console.log "commentsPath"
-        console.log commentsPath
         fs.ensurePath commentsPath,(err) ->
             return throw err  if err
     

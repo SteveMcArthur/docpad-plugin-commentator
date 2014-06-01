@@ -43,6 +43,18 @@ module.exports = (testers) ->
 
         # Test Generate
         #testGenerate: testers.RendererTester::testGenerate
+        # Test Generate
+        testGenerate: ->
+            # Prepare
+            tester = @
+
+            # Test
+            @test "generate", (done) ->
+                tester.docpad.action 'generate', (err) ->
+                    return done(err)
+
+        # Chain
+        @
 
         # Custom test for the server
         testServer: (next) ->
