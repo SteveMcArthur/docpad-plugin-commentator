@@ -123,9 +123,8 @@ module.exports = (testers) ->
                                     
                             # Check
                             expect(actual).to.deep.equal(expected)
-                            wait 2*1000, ->
-                                console.log "wait ended"
-                                done()
+                            done()
+                  
                             
                 test "comments folder exists", (done) ->
                     b = fs.existsSync(output)
