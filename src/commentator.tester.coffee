@@ -78,7 +78,6 @@ module.exports = (testers) ->
                     now = new Date()
                     nowTime = now.getTime()
                     nowString = now.toString()
-                    console.log "post comment..."
                     superAgent
                         .post(postUrl)
                         .type('json').set('Accept', 'application/json')
@@ -89,7 +88,6 @@ module.exports = (testers) ->
                         )
                         .timeout(30*1000)
                         .end (err,res) ->
-                            console.log "post comment end method"
                             if err
                                 console.log("ERROR.......")
                                 console.log(err)
@@ -123,9 +121,7 @@ module.exports = (testers) ->
                                     timeid: nowTime,
                                     fullPath: pathUtil.join('trimmed','comments',nowTime+'.html.md')
                                     
-                            console.log "comparing data"
-                            console.log actual
-                            console.log expected
+                    
                             # Check
                             expect(actual).to.deep.equal(expected)
                             done()
@@ -181,8 +177,10 @@ module.exports = (testers) ->
                  test "check style tag first child of div.com", (done) ->
                    
                     content = fs.readFileSync(output,{encoding:'utf8'})
+                    console.log content
                     $ = cheerio.load(content)
                     el = $('.com > style')
+                    console.log el.length
                     expect(el).to.have.length(1)
                     done()
                     
