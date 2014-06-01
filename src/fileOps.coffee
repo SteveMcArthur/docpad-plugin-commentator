@@ -12,7 +12,7 @@ fileOps =
                 
     copyFile: (source, target, cb) ->
         cbCalled = false
-        done: (err) ->
+        done = (err) ->
             console.log(err)
             if !cbCalled
                 cb(err)
@@ -20,10 +20,12 @@ fileOps =
                     
         rd = fs.createReadStream(source)
         rd.on "error", (err) ->
+            console.log err
             done(err)
 
         wr = fs.createWriteStream(target)
         wr.on "error", (err) ->
+            console.log err
             done(err)
         wr.on "close", (ex) ->
             done()
