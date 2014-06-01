@@ -121,7 +121,7 @@ module.exports = (testers) ->
                                     author: "Author Name",
                                     date: nowString,
                                     timeid: nowTime,
-                                    fullPath: 'trimmed\\comments\\'+nowTime+'.html.md'
+                                    fullPath: pathUtil.join('trimmed','comments',nowTime+'.html.md')
                                     
                             console.log "comparing data"
                             console.log actual
