@@ -77,7 +77,7 @@ module.exports = (testers) ->
                 test "post a new comment to #{postUrl}", (done) ->
                     now = new Date()
                     nowTime = now.getTime()
-                    nowString = now.toString()  
+                    nowString = now.toString()
                     superAgent
                         .post(postUrl)
                         .type('json').set('Accept', 'application/json')
@@ -121,34 +121,34 @@ module.exports = (testers) ->
                                     
                             # Check
                             expect(actual).to.deep.equal(expected)
-                            wait 2*1000, ->                                   
+                            wait 2*1000, ->
                                 console.log "wait ended"
                                 done()
                             
                 test "comments folder exists", (done) ->
                     b = fs.existsSync(output)
-                    expect(b).to.equal(true)                  
-                    done() 
+                    expect(b).to.equal(true)
+                    done()
                     
                 test "comments file exists", (done) ->
                     b = fs.existsSync(commentPath)
-                    expect(b).to.equal(true)                  
-                    done() 
+                    expect(b).to.equal(true)
+                    done()
                     
                 test "fonts folder exists", (done) ->
                     fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
                     b = fs.existsSync(fontPath)
-                    expect(b).to.equal(true)                  
+                    expect(b).to.equal(true)
                     done()
                     
                 test "fonts files exists", (done) ->
                     fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
                     files = fs.readdirSync(fontPath)
-                    expect(files).to.have.length(5)                  
-                    done() 
+                    expect(files).to.have.length(5)
+                    done()
                 
-                test "docpad generate", (done) ->           
-                    docpad.action('generate') 
+                test "docpad generate", (done) ->
+                    docpad.action('generate')
                     done()
 
     
@@ -157,10 +157,10 @@ module.exports = (testers) ->
             @
             
         testCustom: (next) ->
-            tester = @ 
+            tester = @
             fs = require('fs')
             # Test
-            @suite 'output', (suite,test) ->            
+            @suite 'output', (suite,test) ->
                 
                 cheerio = require('cheerio')
                 output = pathUtil.join(tester.getConfig().testPath, 'out', 'index.html')
@@ -169,7 +169,7 @@ module.exports = (testers) ->
                 test "index.html exists", (done) ->
                   
                     b = fs.existsSync(output)
-                    expect(b).to.equal(true)                  
+                    expect(b).to.equal(true)
                     done()
                     
                  test "check style tag first child of div.com", (done) ->
@@ -177,45 +177,44 @@ module.exports = (testers) ->
                     content = fs.readFileSync(output,{encoding:'utf8'})
                     $ = cheerio.load(content)
                     el = $('.com > style')
-                    expect(el).to.have.length(1)                  
+                    expect(el).to.have.length(1)
                     done()
                     
                 test "two script tags", (done) ->
-                        el = $('script')
-                        expect(el).to.have.length(1)
-                        done()
+                    el = $('script')
+                    expect(el).to.have.length(1)
+                    done()
                  
                 test "have comment template", (done) ->
-                        el = $('#comment-template')
-                        expect(el).to.have.length(1)
-                        done()
+                    el = $('#comment-template')
+                    expect(el).to.have.length(1)
+                    done()
                         
                 test "have comment main form", (done) ->
-                        el = $('#main-form')
-                        expect(el).to.have.length(1)
-                        done()
+                    el = $('#main-form')
+                    expect(el).to.have.length(1)
+                    done()
                         
                 test "have comment second form", (done) ->
-                        el = $('#second-form')
-                        expect(el).to.have.length(1)
-                        done()
+                    el = $('#second-form')
+                    expect(el).to.have.length(1)
+                    done()
                         
                 test "have comment two forms", (done) ->
-                        el = $('form')
-                        expect(el).to.have.length(2)
-                        done()
+                    el = $('form')
+                    expect(el).to.have.length(2)
+                    done()
                         
                 test "have comments div", (done) ->
-                        el = $('#comments')
-                        expect(el).to.have.length(1)
-                        el = $('div.comments')
-                        expect(el).to.have.length(1)
-                        done()
+                    el = $('#comments')
+                    expect(el).to.have.length(1)
+                    el = $('div.comments')
+                    expect(el).to.have.length(1)
+                    done()
                 test "forms have action attribute '/comments", (done) ->
-                        el = $('form[action="/comments"]')
-                        #console.log el.length
-                        expect(el).to.have.length(2)
-                        done()
+                    el = $('form[action="/comments"]')
+                    expect(el).to.have.length(2)
+                    done()
                         
             
                  
