@@ -175,7 +175,7 @@ module.exports = (testers) ->
                     done()
                     
                  test "check style tag first child of div.com", (done) ->
-                   
+                    console.log output
                     content = fs.readFileSync(output,{encoding:'utf8'})
                     console.log content
                     $ = cheerio.load(content)
