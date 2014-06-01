@@ -124,6 +124,8 @@ module.exports = (testers) ->
                                     fullPath: 'trimmed\\comments\\'+nowTime+'.html.md'
                                     
                             console.log "comparing data"
+                            console.log actual
+                            console.log expected
                             # Check
                             expect(actual).to.deep.equal(expected)
                             done()
