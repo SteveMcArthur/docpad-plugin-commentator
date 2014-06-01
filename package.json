@@ -44,6 +44,7 @@
     "test": "node ./out/commentator.test.js"
   },
   "dependencies": {
+    "docpad-plugin-eco": "~2.0.3",
     "eco": "~1.1.0",
     "safefs": "~3.1.1"
   },

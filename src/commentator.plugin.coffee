@@ -33,11 +33,9 @@ module.exports = (BasePlugin) ->
                 @referencesOthers()
                 config = plugin.getConfig()
                 eco = require('eco')
-                console.log "got eco"
                 pageComments = docpad.getCollection(plugin.getConfig().collectionName).findAll({'postslug': @document.slug},[date:-1])
                 obj = {baseComment:config.baseComment,eco:eco,allComments: pageComments,document:@document,styleContent:config.styleContent}
                 html = eco.render(config.blockHtml,obj)
-                console.log html
                 html
 
             # getComments using the document slug

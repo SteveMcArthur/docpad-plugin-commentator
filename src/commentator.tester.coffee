@@ -125,6 +125,7 @@ module.exports = (testers) ->
                             # Check
                             expect(actual).to.deep.equal(expected)
                             done()
+                
                   
                             
                 test "comments folder exists", (done) ->
