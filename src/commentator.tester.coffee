@@ -156,13 +156,15 @@ module.exports = (testers) ->
                     done()
                     
                 test "fonts folder exists", (done) ->
-                    fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
+                    fontPath = pathUtil.join docpad.config.filesPaths[0],'fonts'
+                    #fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
                     b = fs.existsSync(fontPath)
                     expect(b).to.equal(true)
                     done()
                     
                 test "fonts files exists", (done) ->
-                    fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
+                    fontPath = pathUtil.join docpad.config.filesPaths[0],'fonts'
+                    #fontPath = pathUtil.join(tester.getConfig().testPath, 'out', 'fonts')
                     files = fs.readdirSync(fontPath)
                     expect(files).to.have.length(5)
                     done()
@@ -244,6 +246,6 @@ module.exports = (testers) ->
                 
                     
             # Cleanup
-            @cleanup()
+            #@cleanup()
             
             

@@ -20,25 +20,29 @@ fileOps =
                     
         rd = fs.createReadStream(source)
         rd.on "error", (err) ->
-            console.log err
             done(err)
 
         wr = fs.createWriteStream(target)
         wr.on "error", (err) ->
-            console.log err
             done(err)
         wr.on "close", (ex) ->
             done()
         rd.pipe(wr)
     
     #copy assets to the docpad projects 'files' path
-    copyFonts: (docpad,fontsPath) ->
-        fontsOut = pathUtil.join docpad.config.filesPaths[0],'fonts'
+    copyFonts: (docpad,fontsPath,fontsOut) ->
+        console.log fontsPath
+        console.log fontsOut
         files = @config.files
         copyFile = @copyFile
-        fs.ensurePath fontsOut,(next) ->
-            for filename in files
-                copyFile(pathUtil.join(fontsPath,filename),pathUtil.join(fontsOut,filename))
+        if !fs.existsSync fontsOut
+            console.log "Make fonts out dir"
+            fs.mkdirSync fontsOut
+            
+        console.log "copy font files"
+        for filename in files
+            copyFile(pathUtil.join(fontsPath,filename),pathUtil.join(fontsOut,filename))
+        fontsOut
 
     #find where the comment partials are stored
     #may be in the standard 'node_modules' or 'plugin' folders, or the 'out' folder for tests
@@ -56,8 +60,6 @@ fileOps =
     #make sure the comments folder exists in the 'documents' folder
     checkCommentsPath: (docpad) ->
         commentsPath = pathUtil.join docpad.config.documentsPaths[0],'comments'
-        console.log "comments path"
-        console.log commentsPath
         if !fs.existsSync commentsPath
             fs.mkdirSync commentsPath
     
@@ -73,8 +75,11 @@ fileOps =
         styleContent = fs.readFileSync  stylePath,'utf8'
         styleContent = styleContent.replace /^\s+|\n\s*|\s+$/g,''
         
+        #copy from plugin out path
         fontsPath =  pathToPartial.replace /partials(\/|\\)comment\.html\.eco/,'fonts'
-        @copyFonts(docpad,fontsPath)
+        #to docpad project files source path (which should, in turn, be copied to the docpad out path)
+        fontsOut = pathUtil.join docpad.config.filesPaths[0],'fonts'
+        @copyFonts(docpad,fontsPath,fontsOut)
         @checkCommentsPath(docpad)
 
         styleContent:styleContent

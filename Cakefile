@@ -164,15 +164,24 @@ actions =
             spawn(DOCPAD, ['generate'], {stdio:'inherit', cwd:APP_PATH}).on('close', safe next, step4)
             
         step4 = ->
-            partialPathSrc = pathUtil.join(config.COFFEE_SRC_PATH,'partials')
-            partialPathOut = pathUtil.join(config.COFFEE_OUT_PATH,'partials')
+            partialPathSrc = pathUtil.join config.COFFEE_SRC_PATH,'partials'
+            partialPathOut = pathUtil.join config.COFFEE_OUT_PATH,'partials'
+            fontPathSrc = pathUtil.join config.COFFEE_OUT_PATH,'fonts'
+            fontPathOut = pathUtil.join config.COFFEE_OUT_PATH,'fonts'
+
             if !fsUtil.existsSync(config.COFFEE_OUT_PATH)
                 fsUtil.mkdirSync(config.COFFEE_OUT_PATH)
             if !fsUtil.existsSync(partialPathOut)
                 fsUtil.mkdirSync(partialPathOut)
+            if !fsUtil.existsSync(fontPathOut)
+                fsUtil.mkdirSync(fontPathOut)
             copyFile(pathUtil.join(partialPathSrc,'comment.html.eco'),pathUtil.join(partialPathOut,'comment.html.eco'))
             copyFile(pathUtil.join(partialPathSrc,'commentbase.html.eco'),pathUtil.join(partialPathOut,'commentbase.html.eco'))
             copyFile(pathUtil.join(config.COFFEE_SRC_PATH,'commentator.css'),pathUtil.join(config.COFFEE_OUT_PATH,'commentator.css'))
+            files = fsUtil.readdirSync(fontPathSrc)
+            #copy font files from the plugin source folder to the plugin out folder
+            for filename in files
+                copyFile(pathUtil.join(fontPathSrc,filename),pathUtil.join(fontPathOut,filename))
             next()
 
         # Start

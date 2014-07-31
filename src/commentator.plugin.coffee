@@ -41,7 +41,9 @@ module.exports = (BasePlugin) ->
             # getComments using the document slug
             templateData.getComments = ->
                 slug = @document.slug
+                str = "Hello Rachael Dyer!!"
                 return docpad.getCollection(plugin.getConfig().collectionName).findAll({'postslug': slug},[date:-1])
+                
 
             # Chain
             @
