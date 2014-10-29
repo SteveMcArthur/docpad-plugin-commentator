@@ -35,7 +35,7 @@ config = {}
 config.TEST_PATH = "test"
 config.DOCCO_SRC_PATH   = null
 config.DOCCO_OUT_PATH   = "docs"
-config.COFFEE_SRC_PATH  = null
+config.COFFEE_SRC_PATH  = "./"
 config.COFFEE_OUT_PATH  = "out"
 config.DOCPAD_SRC_PATH  = null
 config.DOCPAD_OUT_PATH  = "out"
@@ -58,19 +58,14 @@ copyFile = (source, target) ->
     cbCalled = false
     done = (err) ->
         console.log(err)
-        #throw err
-                    
+
     rd = fsUtil.createReadStream(source)
     rd.on "error", (err) ->
-        console.log("READ ERROR")
         done(err)
 
     wr = fsUtil.createWriteStream(target)
     wr.on "error", (err) ->
-        console.log("WRITE ERROR")
         done(err)
-    wr.on "close", (ex) ->
-        done()
     rd.pipe(wr)
 
 
@@ -148,25 +143,23 @@ actions =
         # Prepare
         (next = opts; opts = {})  unless next?
 
-        # Steps
         step1 = ->
-            console.log('cake install')
-            actions.install(opts, safe next, step2)
-            
+            return step2()
+
         step2 = ->
             return step3()  if !config.COFFEE_SRC_PATH or !fsUtil.existsSync(COFFEE)
             console.log('coffee compile')
             spawn(COFFEE, ['-co', config.COFFEE_OUT_PATH, config.COFFEE_SRC_PATH], {stdio:'inherit', cwd:APP_PATH}).on('close', safe next, step3)
-            
+
         step3 = ->
             return step4()  if !config.DOCPAD_SRC_PATH or !fsUtil.existsSync(DOCPAD)
             console.log('docpad generate')
             spawn(DOCPAD, ['generate'], {stdio:'inherit', cwd:APP_PATH}).on('close', safe next, step4)
-            
+
         step4 = ->
             partialPathSrc = pathUtil.join config.COFFEE_SRC_PATH,'partials'
             partialPathOut = pathUtil.join config.COFFEE_OUT_PATH,'partials'
-            fontPathSrc = pathUtil.join config.COFFEE_OUT_PATH,'fonts'
+            fontPathSrc = pathUtil.join config.COFFEE_SRC_PATH,'fonts'
             fontPathOut = pathUtil.join config.COFFEE_OUT_PATH,'fonts'
 
             if !fsUtil.existsSync(config.COFFEE_OUT_PATH)
@@ -175,14 +168,21 @@ actions =
                 fsUtil.mkdirSync(partialPathOut)
             if !fsUtil.existsSync(fontPathOut)
                 fsUtil.mkdirSync(fontPathOut)
+
             copyFile(pathUtil.join(partialPathSrc,'comment.html.eco'),pathUtil.join(partialPathOut,'comment.html.eco'))
             copyFile(pathUtil.join(partialPathSrc,'commentbase.html.eco'),pathUtil.join(partialPathOut,'commentbase.html.eco'))
             copyFile(pathUtil.join(config.COFFEE_SRC_PATH,'commentator.css'),pathUtil.join(config.COFFEE_OUT_PATH,'commentator.css'))
+            console.log("copied partials")
+            console.log(fontPathSrc)
             files = fsUtil.readdirSync(fontPathSrc)
+            console.log("files: "+files.length)
             #copy font files from the plugin source folder to the plugin out folder
+
             for filename in files
+                console.log(filename)
                 copyFile(pathUtil.join(fontPathSrc,filename),pathUtil.join(fontPathOut,filename))
-            next()
+
+            ##next()
 
         # Start
         step1()

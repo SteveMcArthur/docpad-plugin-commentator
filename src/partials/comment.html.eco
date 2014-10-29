@@ -32,12 +32,12 @@
                                     <span class="float-right hidden responseid"></span>
                                 </div>
                                 <div class="text">
-                                    
+
                                 </div>
                                 <div class="actions">
                                     <a class="reply">Reply</a>
                                     <a class="delete hidden">Delete</a>
-                                    
+
                                     <span class="float-right hidden">Inserted</span>
                                 </div>
                             </div>
@@ -53,13 +53,13 @@
                             setTimeout(function() { defer(method) }, 50);
                         }
                     }
-                    
+
                     function assignReplyForm(){
                         //as this function is repeatedly called
                         //each time a new comment is inserted
                         //we need to remove any existing handlers
                         $('.actions .reply').off('click');
-                        
+
                         //now re-attach click handler
                         $('.actions .reply').click(function(){
                             var offset = $(this).offset();
@@ -69,9 +69,9 @@
                             var form = $('#second-form');
                             parent.append(form);
                             form.fadeIn();
-                            
+
                         });
-                        
+
                     }
                     function setPlaceHolders(){
                         $('.field .placeholder').click(function(e){
@@ -80,7 +80,7 @@
                             txtarea.focus();
                             txtarea[0].selectionStart = 0;
                             txtarea[0].selectionEnd = 0;
-            
+
                         });
                          $('textarea').click(function(){
                             $(this).siblings('.placeholder').hide();
@@ -92,11 +92,11 @@
                         });
                         assignReplyForm();
                     }
-                    
+
                     defer(setPlaceHolders);
-                    
+
                     var ablog = ablog || {};
-                    
+
                     ablog.formSubmit = function(formId) {
                         var form = $('#'+formId);
                         var timeEl = form.parent().find('.timeid');
@@ -112,7 +112,7 @@
                             "content": form.find('.content').val(),
                             "responseid": responseId
                         };
-                        
+
                         $.ajax({
                             type: "POST",
                             url: url,
@@ -126,7 +126,7 @@
                                 template.find('.slug').html(data.meta.postslug);
                                 template.find('.timeid').html(data.meta.timeid);
                                 template.find('.comment').attr('id',data.meta.timeid);
-                                
+
                                 if (data.meta.responseid){
                                     template.find('.responseid').html(data.meta.responseId);
                                     $('#'+data.meta.responseid+' .content').append(template);
@@ -134,22 +134,22 @@
                                 else{
                                     $('#comments').prepend(template);
                                 }
-                                
+
                                 assignReplyForm();
                             }
                         });
                     }
                 </script>
-      
+
                 <form id='main-form' action="/comments" method="POST" class="reply form">
-                   
+
                     <div class="field">
                         <span class="placeholder">Join the discussion...</span>
                         <textarea name="content" class="content"></textarea>
                     </div>
                     <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
                     <div style="height:40px;">
-                        <div style="width:58%;float:left;">   
+                        <div style="width:58%;float:left;">
                             <input name="author" type="text" value="" placeholder="Name"   class="author">
                         </div>
                         <div style="width:38%;float:right">
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <form id='second-form' action="/comments" method="POST" class="reply form" style="display:none;">
                     <div class="field">
                         <span class="placeholder">Join the discussion...</span>
@@ -167,7 +167,7 @@
                     </div>
                     <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
                     <div style="height:40px;">
-                        <div style="width:58%;float:left;">   
+                        <div style="width:58%;float:left;">
                             <input  name="author" type="text" value="" placeholder="Name" class="author">
                         </div>
                         <div style="width:38%;float:right">
